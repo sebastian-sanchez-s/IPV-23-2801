@@ -1,0 +1,1758 @@
+\documentclass[11pt]{article}
+
+% Layout
+\usepackage[margin=3cm]{geometry}
+
+% Tools
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{mathtools}
+\usepackage{multirow}
+\usepackage[spanish]{babel}
+\usepackage{tikz}
+\usetikzlibrary{babel}
+\usetikzlibrary{calc}
+\usetikzlibrary{patterns}
+\usetikzlibrary{arrows.meta}
+
+% Custom design
+\usepackage{titlesec}
+\usepackage{float}
+\usepackage{caption}
+
+% Math, Fonts and Symbols
+\usepackage{mathptmx}
+\usepackage{amsmath, amsthm, amssymb, bm}
+\usepackage[T1]{fontenc}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Title fomat
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand{\thesection}{\arabic{section}}
+\numberwithin{equation}{section}
+
+% Section
+\titleformat{\section}[block]
+{\large\bfseries\scshape}% format
+{\thesection.}% label
+{0.5em}% sep
+{}% before code
+[\titlerule] % after code
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Custom commands and Operators
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Derivative
+\let\d\relax
+\newcommand{\d}[1]{\,\frac{\mathrm{d}}{\mathrm{d}#1}}
+\newcommand{\dd}[1]{\,\frac{\mathrm{d}^2}{\mathrm{d}#1}}
+
+% Sets
+\def\R{\mathbb{R}}
+\def\C{\mathbb{C}}
+\def\H{\mathcal{H}}
+\def\Cc{\mathcal{C}}
+
+% Bold vector
+\def\x{\textbf{x}}
+\def\y{\textbf{y}}
+\def\z{\textbf{z}}
+
+% Normal vector
+\def\n{\hat{\textbf{n}}}
+
+% Direction vector
+\def\dir{\textbf{d}}
+
+% Imaginary unit
+\let\i\relax
+\def\i{\mathrm{i}}
+
+% Operators
+\def\Slpot{\mathcal{V}}
+\def\Dlpot{\mathcal{K}}
+
+\def\Slop{\mathrm{V}}
+\def\Dlop{\mathrm{K}}
+\def\Adlop{\mathrm{T}}
+\def\Hop{\mathrm{D}}
+
+\def\Idop{\textrm{I}}
+
+\def\traceN{\gamma_{N}}
+\def\traceD{\gamma_{D}}
+
+% subcripts
+\def\tot{\textrm{tot}}
+\def\exterior{\textrm{ext}}
+\def\interior{\textrm{int}}
+\def\inc{\textrm{inc}}
+\def\sca{\textrm{sca}}
+
+% Letters
+\def\Rho{\mathrm{P}}
+
+% Resize abs and norm
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\|}{\|}
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
+\title%
+{\bfseries\scshape%
+Dispersión de la onda acústica plana en la esfera homogénea\\
+\normalsize Soluciones analíticas y formulación BEM
+}
+\author{\bfseries\normalsize Sebastián Sánchez}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Introducción}
+
+Los fenómemos oscilatorios son comunes al pertubar un sistema estable;
+Tal es el caso, por ejemplo, de una cuerda, un péndulo e incluso la presión 
+del aire generada por el sonido. Todos estos fénonemos pueden ser descritos por
+la ecuación de ondas
+\begin{displaymath}
+	\partial^2_{t} u(t,x) = c^2 \partial^2_{x} u(t,x),
+\end{displaymath}
+donde \(u(t,x)\) representa el desplazamiento con respecto a la posición de
+equilibrio para el tiempo \(t\) en la posición \(x\) y \(c\) es una constante
+real que compendia las propiedades físicas de los objetos.
+
+La ruta usual para resolver esta ecuación es mediante el método de separación de
+variables. Este consiste en separar las dos naturalezas del fénomeno, vale
+decir, su naturaleza temporal y espacial. Específicamente, buscamos soluciones
+de la forma
+\begin{displaymath}
+	u(t,x) = T(t) E(x)
+\end{displaymath}
+De esta forma, la ecuación de ondas se lee
+\begin{displaymath}
+	E(x) \partial^2_{t} T(t) = c^2 T(t) \partial^2_{x} E(x)
+\end{displaymath}
+Y por lo tanto
+\begin{displaymath}
+	\frac{\partial^2_{t} T(t)}{T(t)} 
+	= 
+	c^2 \frac{\partial^2_{x} E(x)}{E(x)} 
+\end{displaymath}
+Como las funciones y variables son independientes, ambos cocientes deben igualar
+alguna constante (no necesariamente real) \(-\lambda^2\). Despejando para la componente espacial
+obtenemos la ecuación de Helmholtz
+\begin{displaymath}
+	\partial^2_{x} E(x) + k^2 E(x) = 0
+\end{displaymath}
+donde \(k = \lambda / c\).
+
+\section{Solución de la ecuación de Helmholtz}
+\label{sec:helmholtz}
+
+Para \(\psi \in \Cc^2\) un campo escalar, la ecuación
+de Helmholtz se lee
+\begin{equation}
+\label{helmholtz}
+	\nabla^2 \psi + \kappa^2 \psi = 0
+,\end{equation}
+donde \(\kappa\) es una constante. En coordenadas esféricas queda
+(ver Apéndice~\ref{ap:esfericas})
+
+\begin{equation}\label{helmholtz:esfericas}
+	\frac{1}{r^2} \partial_{r} \left(r^2 \partial_{r} \psi\right)
+	+
+	\frac{1}{r^2\sin\theta} \partial_{r} \left(\sin\theta \partial_{\theta} \psi\right)
+	+
+	\frac{1}{r^2\sin^2\theta} \partial^2_{\varphi} \psi
+	=
+	-\kappa^2 \psi
+,\end{equation}
+
+Para resolver la ecuación, supondremos que \(\psi\) no tiene interdependencia
+entre sus componentes, es decir, impondremos \(\psi\) una función separable de la forma
+\begin{equation}
+	\psi = f(r) g(\theta) h(\varphi).
+\end{equation}
+Reemplazando esta expresión en~\eqref{helmholtz:esfericas} nos deja
+
+\begin{displaymath}
+	gh \frac{1}{r^2} \partial_{r} \left(r^2 \partial_{r} f\right)
+	+
+	fh \frac{1}{r^2 \sin\theta} \partial_{\theta} \left(\sin\theta
+	\partial_{\theta} g\right)
+	+
+	fg \frac{1}{r^2\sin^2\theta} \partial^2_{\varphi} h
+	=
+	-\kappa^2 fgh
+\end{displaymath}
+Multiplicando por \(r^2 \sin^2\theta/fgh\)
+
+\begin{displaymath}
+	\frac{\sin^2\theta}{f} \partial_{r} \left(r^2 \partial_{r} f\right)
+	+
+	\frac{\sin\theta}{g} \partial_{\theta} \left(\sin\theta \partial_{\theta} g\right)
+	+
+	\frac{1}{h} \partial^2_{\varphi} h
+	=
+	-{(\kappa r \sin\theta)}^2.
+\end{displaymath}
+
+Dado que el último sumando del lado izquierdo es el único dependiente de
+\(\varphi\), debe ser constante para que la ecuación valga. Imponemos esto y
+dejamos \(m\) ser la constante tal que
+
+\[
+	\frac{1}{h} \partial^2_{\varphi} h = -m^2.
+\]
+
+Ahora la ecuación se lee
+
+\[
+	\frac{\sin^2\theta}{f} \partial_{r} \left(r^2 \partial_{r} f\right)
+	+
+	\frac{\sin\theta}{g} \partial_{\theta} \left(\sin\theta \partial_{\theta} g\right)
+	-
+	m^2
+	=
+	-(\kappa r \sin\theta)^2.
+\]
+Dividiendo por \(\sin^2\theta\) nos deja
+\[
+	\frac{1}{f} \partial_{r} \left(r^2 \partial_{r} f\right)
+	+
+	\frac{1}{g\sin\theta} \partial_{\theta} \left(\sin\theta \partial_{\theta} g\right)
+	-
+	\frac{m^2}{\sin^2\theta}
+	=
+	-(\kappa r)^2
+.\]
+
+Similar a lo anterior, ahora los últimos dos sumandos del lado izquierdo son los
+únicos que dependen de \(\theta\), por ende, deben ser constantes. Digamos que
+\(n\) es la constante tal que
+
+\begin{displaymath}
+	\frac{1}{g\sin\theta} \partial_{\theta} \left(\sin\theta \partial_{\theta} g\right)
+	-
+	\frac{m^2}{\sin^2\theta}
+	=
+	-n(n+1)
+.\end{displaymath}
+
+En resumen, quedamos con tres ecuaciones desacopladas en las variables \(r\),
+\(\theta\) y \(\varphi\)
+\begin{alignat}{3}
+\label{helmholtz:r}
+	\d{r} \left(r^2 \d{r} f\right)
+	+
+	\left((\kappa r)^2 - n (n+1)\right) f
+	&= 0
+	\\
+\label{helmholtz:t}
+	\frac{1}{g\sin\theta} \d{\theta} \left(\sin\theta \d{\theta} g\right)
+	-
+	\frac{m^2}{\sin^2\theta} + n(n+1)
+	&= 0
+	\\
+\label{helmholtz:p}
+	\frac{1}{h} \partial^2_{\varphi} h + m^2
+	&= 0
+\end{alignat}
+
+En~\eqref{helmholtz:r}: Si ponemos \(x = \kappa r\), nos queda una ecuación en la
+forma de Bessel (esféricas)
+\begin{displaymath}
+\label{eq:bessel:esfericas}
+	x^2 \dd{x} f + 2x \d{x} f + \left(x^2 - n(n+1)\right) f = 0
+.\end{displaymath}
+
+Esta ecuación tiene soluciones analíticas de la forma
+\begin{alignat}{2}
+\label{f1}
+	f_1(r) &= A_{1,n,m} j_n(\kappa r) + B_{1,n,m} y_n(\kappa r)
+	, \text{ o bien},\\
+\label{f2}
+	f_2(r) &= C_{1,n,m} h_{n}^{(1)} (\kappa r) + D_{1,n,m} h^{(2)}_{n} (\kappa r),
+\end{alignat}
+donde \(j_n\) es la función de Bessel esférica, \(y_n\) es la función de Bessel
+esférica de segundo tipo (o función de Neumann esférica) y \(h^{(1)}_n,
+h^{(2)}_{n}\) son las funciones de Hankel de primer y segundo tipo
+respectivamente.
+
+En~\eqref{helmholtz:t}: Si ponemos \(x = \cos\theta\), nos queda la ecuación de
+Legendre
+\begin{displaymath}
+\label{eq:legendre}
+	(1-x^2) \dd{x} g - 2 x \d{x} g + \left(n(n+1) - \frac{m^2}{1-x^2}\right) g
+	= 0
+\end{displaymath}
+
+Cuyas soluciones son analíticas y de la forma
+\begin{alignat}{2}
+\label{g1}
+	g_1(\theta) &= A_{2,n,m} P^m_n(\cos\theta) + B_{2,n,m} P^m_n (-\cos\theta)
+	\quad&&, n\not\in \mathbb{Z}\\
+\label{g2}
+	g_2(\theta) &= C_{2,n,m} P^m_n(\cos\theta) + D_{2,n,m} Q^m_n (\cos\theta)
+	\quad&&, n\in \mathbb{Z}
+\end{alignat}
+
+donde \(P^m_n, Q^m_n\) son las funciones de Legendre asociadas de primer y
+segundo tipo respectivamente.
+
+En~\eqref{helmholtz:p}: Las soluciones son de la forma
+\begin{alignat}{2}
+\label{h1}
+	h_1(\varphi) &= A_{3,n,m} e^{-\i m\varphi} + B_{3,n,m} e^{\i m\varphi}\\
+\label{h2}
+	h_2(\varphi) &= C_{3,n,m} \cos(m\varphi) + D_{3,n,m} \sin(m\varphi)
+\end{alignat}
+
+\section{Contexto acústico}%
+\label{sec:acustico}
+
+Denotemos por \(\Omega^{\interior}\) a la esfera abierta de radio \(R>0\) en \(\R^3\), \(\Omega^{\exterior} =
+\R^3\setminus \overline{\Omega}_{1}\) su exterior y \(\Gamma = \partial\Omega^{\interior}\)
+su borde. Sean \(c^{\exterior/\interior}, \rho^{\exterior/\interior}\) escalares representando la
+rapidez de propagación y la densidad del material respectivamente, en
+\(\Omega^{\exterior/\interior}\).
+
+Denotemos por \(p_{\inc}\in \Cc^{2}(\R^3)\) el campo de presión 
+incidente y \(p_{\sca}\in \H^{2}(\overline{\Omega^{\exterior}})\) al campo
+de presión dispersado por \(\Omega^{\interior}\). El campo total lo denotaremos por
+\(p_{\tot} = p_{\exterior} + p_{\interior} \in \H^2(\R^3)\), donde
+\(p_{\exterior/\interior} \in \H^{2}(\Omega^{\exterior/\interior})\)
+denota la presión total en \(\Omega^{\exterior/\interior}\) respectivamente.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+	\def\localrad{1};
+	\def\localdia{{2*\localrad}}
+	\coordinate (Omega1) at (\localdia,0);
+	\path (Omega1) -- +(45:\localdia) 
+		node (Omega0) {\small \(\Omega^{\exterior},c^{\exterior},\rho^{\exterior}\)};
+	\path (Omega1) -- +(0,-\localrad) node[below] (Gamma) {\(\Gamma\)};
+
+	\draw (-1.,-\localdia) -- (-1.,\localdia);
+	\draw (-.8,-\localdia) -- (-.8,\localdia);
+	\draw (-.6,-\localdia) -- (-.6,\localdia);
+	\draw[->] (-1.5,0) -- (.2, 0) node[below] {\scriptsize Onda plana};
+
+	\draw[pattern=crosshatch, pattern color=black!10] (Omega1) circle (\localrad)
+		node {\small \(\Omega^{\interior},c^{\interior},\rho^{\interior}\)};
+
+	\draw[-Triangle,thick] ($(Omega1) + (10:\localrad)$) -- +(10:\localrad) 
+		node[below] {\(\hat n\)};
+\end{tikzpicture}
+\caption{Contexto acústico}
+\end{figure}
+
+En lo que sigue, asumiremos que \(c^{\exterior}, \rho^{\exterior}, c^{\interior}, \rho^{\interior}\)
+son constantes y que tenemos una onda plana (modelada por \(p_{\inc}\)) propagándose en el espacio
+con frecuencia \(\omega\). Se sigue que
+\begin{subequations}\label{eq:helmholtz}
+\begin{equation}
+\label{eq:helmholtz:pinc}
+	\nabla^2 p_{\inc} + \kappa^2_{\exterior} p_{\inc} = 0
+	,\text{ en }\R^3
+\end{equation}
+donde \(\kappa_{\exterior} = \omega/c^{\exterior}\) es el número de onda. Por otro lado,
+\(p_{\tot}\) satisface la ecuación de Helmholtz en ambas regiones
+\begin{equation}
+\label{eq:helmholtz:ptot}
+	\nabla^2 p_{\tot} + \kappa^2_{\exterior/\interior} p_{\tot} = 0
+	, \text{ en } \Omega^{\exterior/\interior}
+\end{equation}
+Adicionalmente, la onda dispersada debe cumplir la \textit{condición de radiación de Sommerfeld}
+\begin{equation}
+\label{sommerfeld}
+	\lim_{r\to \infty}
+	r
+	\left(
+		\partial_r p_{\sca} - \i\kappa_{\exterior} p_{\sca}
+	\right)
+	= 0
+	,\text{ donde } r = \norm{\x}.
+\end{equation}
+\end{subequations}
+
+Una onda plana se puede modelar como una combinación lineal de ondas esféricas
+de la siguiente forma:
+\[
+	e^{\i \kappa_{\exterior}\, \x \cdot \dir}
+	=
+	\sum_{n=0}^{\infty}
+	(2n+1) \i^{n}
+	j_{n} (\kappa_{\exterior} \norm{x})
+	P_{n} (\hat{\x} \cdot \dir)
+	,\qquad
+	\hat{\x} = \x/\norm{\x}
+,\]
+donde \(\x,\dir \in \R^3\) describen una posición en el espacio y
+la dirección de propagación (unitaria) de la onda respectivamente. La constante
+\(\kappa_{\exterior}\) es el número de onda en \(\Omega^{\exterior}\).
+
+Por la simetría radial, sin pérdida de generalidad tomaremos la dirección
+\(\dir = (0,0,1)\). Es decir, la onda
+incidente viaja a paralela al eje \(+z\). En símbolos, la onda incidente en
+coordenadas esféricas se lee 
+\[
+	e^{\i \kappa_{\exterior} r \cos\theta}
+	=
+	\sum_{n=0}^{\infty}
+	(2n+1) \i^{n}
+	j_{n} (\kappa_{\exterior} r)
+	P_{n} (\cos\theta).
+\]
+
+\section{Soluciones Analíticas}
+
+\subsection{Solución al Problema Exterior}\label{ssec:a:exterior}
+
+Buscaremos soluciones para la dispersión en \(\Omega^{\exterior}\). En particular,
+\(p_{\tot} = p_{\exterior} = p_{\sca} + p_{\inc}\).
+
+\subsubsection{Condiciones de borde de Dirichlet}
+\label{ssec:a:exterior:dirichlet}
+
+\noindent La condición de borde adicional es:
+\begin{align}\label{bc:dirichlet}
+	p_{\exterior} &= 0, \text{ en } \Gamma\\[-5pt]
+	\intertext{Equivalentemente}
+	p_{\inc} &= -p_{\sca}, \text{ en } \Gamma
+\end{align}
+
+Recordar que tanto \(p_{\inc}\) como \(p_{\sca}\) satisfacen la ecuación de
+Helmholtz en \(\Omega^{\exterior}\). En particular, asumiremos que \(p_{\sca}\) es una
+superposición de soluciones de la forma \(fgh\) donde \(f,g\) y \(h\) representan la componente
+radial (Ecuaciones~\eqref{f1},\eqref{f2}), polar (Ecuaciones~\eqref{g1},\eqref{g2}) y azimutal
+(Ecuaciones~\eqref{h1},\eqref{h2}) respectivamente, i.e.
+\begin{displaymath}
+	p_{\sca} = \sum_{n=0}^{\infty} b_n f_n(r) g_n(\theta) h_n(\varphi).
+\end{displaymath}
+
+Dada la expresión de \(p_{\inc}\) y con el fin de tener
+una base supondremos que el componente \(g_n\) es de la forma~\eqref{g2} 
+(i.e. \(g_2\) puesto que \(n\) es entero) con el coeficiente \(D_{2,n,0}\) nulo. 
+En resumen,
+\begin{equation}
+\label{psca:g}
+	g_n(\theta)
+	=
+	C_{2,n,0} P_{n} (\cos\theta)
+\end{equation}
+De esta forma, el componente azimutal debe ser constante (pues \(m=0\)).
+Por lo tanto:
+\begin{equation}\label{psca:h}
+	h_n(\varphi)
+	=
+	C_{3,n,0}
+\end{equation}
+Por último, dado que \(p_{\sca}\) debe satisfacer la condición de radiación de
+Sommerfeld~\eqref{sommerfeld}, el componente radial será de la forma~\eqref{f2}
+con \(C_{1,n,0} = 0\) pues \(p_{\sca}\) debe ser una onda viajera hacia infinito (ver
+Apéndice~\ref{ap:fn especiales:ondas viajeras}). De esta forma, la ecuación que
+describe a la onda dispersada en \(\R^3\setminus\Omega^{\interior}\) es de la
+forma
+\begin{equation}\label{psca:forma}
+	p_{\sca}
+	=
+	\sum_{n=0}^{\infty}
+	\underbrace{D_{1,n,0} C_{2,n,0} C_{3,n,0}}_{\eqqcolon \alpha_n}
+		h_{n}^{(2)}(\kappa_{\exterior} r)
+		P_{n}(\cos\theta)
+.\end{equation}
+
+\noindent Por~\eqref{bc:dirichlet} y usando que los polinomios de Legendre son
+ortogonales, los coeficientes de \(p_{\inc}\) son
+\begin{equation}\label{ext:psca:coef:dirichlet}
+	\alpha_n 
+	= 
+	-\frac
+	{
+		(2n+1)\i^n j_n(\kappa_{\exterior} R)
+	}
+	{
+		h_n^{(2)}(\kappa_{\exterior} R)
+	}
+\end{equation}
+
+\subsubsection{Condiciones de borde de Neumann}\label{sssec:a:exterior:neumann}
+
+\noindent Aquí las condiciones de borde son:
+\begin{align}
+\label{bc:neumann}
+	\nabla p_{\exterior}\cdot \n &= 0, \text{ en }
+	\Gamma\\[-1em]
+	\intertext{Equivalentemente}
+	\nabla p_{\inc}\cdot \n &= -\nabla p_{\sca}\cdot \n, \text{ en }
+	\Gamma
+\end{align}
+donde \(\n\) es un vector normal exterior en el punto \(\x\in\Gamma\). En coordenadas
+esféricas queda
+\begin{equation}\label{n}
+	\n = (\sin\theta\cos\varphi, \sin\theta\sin\varphi, \cos\theta).
+\end{equation}
+donde \(\x = (R\sin\theta\cos\varphi, R\sin\theta\sin\varphi, R\cos\theta)\).
+De esta forma, el operador \(\nabla\cdot\n\) se lee:
+\begin{equation}
+\label{nabla.n}
+	\nabla\cdot\n = \partial_{r}
+\end{equation}
+
+\noindent Así, la condición~\eqref{bc:neumann} en coordenadas esféricas
+se traduce a la siguiente expresión:
+\begin{equation}\label{neumann:esfericas}
+	\partial_{r} p_{\inc} = - \partial_{r} p_{\sca}, \text{ en } \Gamma.
+\end{equation}
+
+\noindent Aquí también buscamos expresar \(p_{\sca}\) como una superposición de
+soluciones. Dado que
+solo estamos derivando el componente radial, la elección de \(g_n\) y \(h_n\) se
+mantiene. Más aún, por~\eqref{sommerfeld} la preferencia de \(f_n\) también se
+conserva. Por lo tanto, en \(\R^3\setminus\Omega^{\interior}\) la expresión para
+la onda dispersada es:
+\begin{equation}
+\label{ext:psca:neumann:forma}
+	p_{\sca}
+	=
+	\sum_{n=0}^{\infty}
+	\underbrace{D_{1,n,0} C_{2,n,0} C_{3,n,0}}_{\eqqcolon \beta_n}
+		h_{n}^{(2)}(\kappa_{\exterior} r)
+		P_{n}(\cos\theta)
+\end{equation}
+donde, por~\eqref{bc:neumann} y la ortogonalidad de los polinomios de Legendre
+se tiene que:
+\begin{equation}
+\label{ext:psca:neumann:coef}
+	\beta_n
+	=
+	-\frac
+	{
+		(2n+1) \i^n \partial_{r} j_n(\kappa_{\exterior} R)
+	}
+	{
+		\partial_r h_n^{(2)}(\kappa_{\exterior} R)
+	}
+\end{equation}
+
+\subsection{Solución al Problema de Transmisión}
+\label{sec:a:transmission}
+
+El problema de transmisión consiste en agregar a~\eqref{eq:helmholtz} las
+siguientes condiciones:
+\begin{subequations}\label{eq:transmision}
+\begin{alignat}{2}
+\label{eq:transmision:D}
+	p_{\exterior} &= p_{\interior}
+	&\quad&, \text{ en } \Gamma\\
+\label{eq:transmision:N}
+	\frac{1}{\rho^{\exterior}} \nabla p_{\exterior} \cdot \n
+	&=
+	\frac{1}{\rho^{\interior}} \nabla p_{\interior} \cdot \n
+	&\quad&, \text{ en } \Gamma
+\end{alignat}
+\end{subequations}
+
+Por lo desarrollado en la Sección~\ref{sec:helmholtz} sabemos que la onda
+disperada e interior son de la forma:
+\begin{alignat}{2}
+	p_{\sca}(r,\theta,\varphi)
+	&=
+	\sum_{n=0}^{\infty} f^{\sca}_{n}(r) g^{\sca}_{n}(\theta) h^{\sca}_{n}(\varphi)
+	\\
+	p_{\interior}(r,\theta,\varphi)
+	&=
+	\sum_{n=0}^{\infty} f^{\interior}_{n}(r) g^{\interior}_{n}(\theta) h^{\interior}_{n}(\varphi)
+\end{alignat}
+
+Dado que \(p_{\sca}\) satisface la condición de radiación de
+Sommerfeld~\eqref{sommerfeld}, su componente radial debe ser de la forma
+\begin{equation}
+	f^{\sca}_{n}(r)
+	=
+	C_{1,m,n} h^{(1)}_{n}(\kappa_{\exterior} r)
+	+
+	D_{1,m,n} h^{(2)}_{n}(\kappa_{\exterior} r),
+\end{equation}
+pues necesitamos ondas viajeras.
+
+De manera análoga, el componente radial de la onda interior debe ser de la forma
+\begin{equation}
+	f^{\interior}_{n}(r)
+	=
+	A_{1,n,m} j_{n}(\kappa_{\interior} r)
+	+
+	B_{1,n,m} y_{n}(\kappa_{\interior} r),
+\end{equation}
+que corresponde con ondas estacionarias.
+
+Con el fin de tener una base para comparar, tomaremos \(g^{\sca/\interior}\) de
+la forma \(g^{\sca/\interior}_{n} = C^{\sca}_{2,n,0} P_{n} +
+D^{\interior}_{2,n,0} Q_{n}\) y pondremos \(D^{\sca/\interior}_{2,n,0} = 0\). 
+En consecuencia, \(h^{\sca/\interior}_{n} = C_{3,n,0}^{\sca/\interior}\) una
+constante (pues escogemos \(m=0\)).
+De esta forma, la onda dispersada e interior son de la forma:
+\begin{alignat}{2}
+	p_{\sca}(r,\theta,\varphi)
+	&=
+	\sum_{n=0}^{\infty}
+	\left[
+		C_{1,n,0} C^{\sca}_{2,n,0} C^{\sca}_{3,n,0} h^{(1)}_{n}(\kappa_{\exterior} r)
+		+
+		D_{1,n,0} C^{\sca}_{2,n,0} C^{\sca}_{3,n,0} h^{(2)}_{n}(\kappa_{\exterior} r)
+	\right] P_{n}(\cos\theta)
+	\\
+	p_{\interior}(r,\theta,\varphi)
+	&=
+	\sum_{n=0}^{\infty}
+	\left[
+		A_{1,n,0} C^{\interior}_{2,n,0} C^{\interior}_{3,n,0} j_{n}(\kappa_{\interior} r)
+		+
+		B_{1,n,0} C^{\interior}_{2,n,0} C^{\interior}_{3,n,0} y_{n}(\kappa_{\interior} r)
+	\right] P_{n}(\cos\theta),
+\end{alignat}
+
+Simplificando la notación de manera correspondiente tenemos que:
+\begin{alignat}{2}
+	p_{\sca}(r,\theta,\varphi)
+	&=
+	\sum_{n=0}^{\infty}
+	\left[
+		\sigma^{1}_{n} h^{(1)}_{n}(\kappa_{\exterior} r)
+		+
+		\sigma^{2}_{n} h^{(2)}_{n}(\kappa_{\exterior} r)
+	\right] P_{n}(\cos\theta)
+	\\
+	p_{\interior}(r,\theta,\varphi)
+	&=
+	\sum_{n=0}^{\infty}
+	\left[
+		\iota^{1}_{n} j_{n}(\kappa_{\interior} r)
+		+
+		\iota^{2}_{n} y_{n}(\kappa_{\interior} r)
+	\right] P_{n}(\cos\theta),
+\end{alignat}
+
+Dado que tenemos cuatro incógnitas y dos ecuaciones~\eqref{eq:transmision}, impondremos
+\(\sigma^{1}_{n} = 0\) y \(\iota^{2}_{n} = 0\). De esta forma y por~\eqref{eq:transmision}
+tenemos que
+\begin{alignat}{2}
+	\sum_{n=0}^{\infty}
+	\left[
+		(2n + 1) \i^n j_{n}(\kappa_{\exterior} R)
+		+
+		\sigma^{2}_{n} h^{(2)}_{n}(\kappa_{\exterior} R)
+	\right] P_{n}(\cos\theta)
+	&=
+	\sum_{n=0}^{\infty}
+		\iota^{1}_{n} j_{n} (\kappa_{\interior} R)
+		P_{n}(\cos\theta)
+	\\
+	\sum_{n=0}^{\infty}
+	\frac{\rho^{\interior}}{\rho_{\exterior}}\kappa_{\exterior}
+	\left[
+		(2n + 1) \i^n \partial_{r} j_{n}(\kappa_{\exterior} R)
+		+
+		\sigma^{2}_{n} \partial_{r} h^{(2)}_{n}(\kappa_{\exterior} R)
+	\right] P_{n}(\cos\theta)
+	&=
+	\sum_{n=0}^{\infty}
+		\kappa_{\interior}
+		\iota^{1}_{n} \partial_{r} j_{n} (\kappa_{\interior} R)
+		P_{n}(\cos\theta)
+\end{alignat}
+Donde usamos que \(\partial_{\n} = \partial_{r}\) en coordenadas esféricas y
+\(\partial_{r} P_{n}(\cos\theta) = 0\).
+Luego, usando la ortogonalidad de los polinomios de Legendre obtenemos el 
+sistema lineal
+\begin{alignat}{2}
+	(2n+1)\i^n j_{n}(\kappa_{\exterior} R)
+	+
+	\sigma^{2}_{n} h^{(2)}_{n}(\kappa_{\exterior} R)
+	&=
+	\iota^{1}_{n} j_{n}(\kappa_{\interior} R)
+	\\
+	\frac{\rho^{\interior}}{\rho^{\exterior}} \kappa_{\exterior}
+	\left[
+		(2n+1)\i^n \partial_{r} j_{n}(\kappa_{\exterior} R)
+		+
+		\sigma^{2}_{n} \partial_{r} h^{(2)}_{n}(\kappa_{\exterior} R)
+	\right]
+	&=
+	\kappa_{\interior} \iota^{1}_{n} \partial_{r} j_{n}(\kappa_{\interior} R)
+\end{alignat}
+para cada \(n \ge 0\). 
+
+Dejemos a \(\rho \coloneqq \rho^{\interior}/\rho^{\exterior}\) y \(\kappa
+\coloneqq \kappa_{\exterior}/\kappa_{\interior}\). Luego, 
+resolviendo el sistema se obtiene:
+\begin{alignat}{2}
+	\sigma^{2}_{n}
+	&=
+	\frac
+	{%
+		(2n+1) \i^n
+		\left[
+			j_n(\kappa_{\exterior} R)
+			j'_{n}(\kappa_{\interior} R)
+			-
+			\rho \kappa
+			j_{n}(\kappa_{\interior} R)
+			j'_{n}(\kappa_{\exterior} R)
+		\right]
+	}
+	{%
+		\rho \kappa
+		j_{n}(\kappa_{\interior} R)
+		h^{(2)'}_{n}(\kappa_{\exterior} R)
+		-
+		j'_{n}(\kappa_{\interior} R)
+		h^{(2)}_{n}(\kappa_{\exterior} R)
+	}
+	\\
+	\iota^{1}_{n}
+	&=
+	\frac
+		{(2n + 1) \i^n j_n(\kappa_{\exterior} R) + \sigma^{2}_{n} h^{(2)}_{n} (\kappa_{\exterior} R)}
+		{j_{n}(\kappa_{\interior} R)}
+\end{alignat}
+
+\section{Método de Elementos de Frontera}
+
+El método de elementos de frontera (\textit{BEM} por sus siglás en inglés)
+consiste en reformular un problema volumétrico (de ecuaciones
+diferenciales parciales) como un problema integral de potenciales en la
+frontera.
+
+De manera más específica, las condiciones de frontera se representarán mediante
+condiciones a los operadores de traza. Denotamos al operador de traza de Dirichlet
+como \(\traceD^{\exterior/\interior}\), mientras que para el operador de traza de Neumann
+usamos la notación \(\traceN^{\exterior/\interior}\). Los operadores se definen como:
+\begin{alignat}{2}
+\label{op:trace_dirichlet}
+	(\traceD^{\exterior/\interior} \psi)(x)
+	&\coloneqq \lim_{\Omega^{\exterior/\interior}\ni y\to x} \psi(y)
+	\quad& x\in \Gamma
+	\\
+\label{op:trace:neumann}
+	(\traceN^{\exterior/\interior} \psi)(x)
+	&\coloneqq \lim_{\Omega^{\exterior/\interior}\ni y\to x}
+	\partial_{\n(x)} \psi(y)
+	\quad& x\in \Gamma
+\end{alignat}
+
+Por otro lado, los potenciales que usaremos son de la forma:
+\begin{alignat}{2}
+\label{op:pot:sl}
+	(\Slpot_{\kappa} \psi)(x)
+	&\coloneqq
+	\int_{\Gamma} G_{\kappa}(x,y)
+	\psi(y)\,\textrm{d}\Gamma(y)
+	\quad& x\in \Omega^{\interior} \cup \Omega^{\exterior}
+	\\
+\label{op:pot:dl}
+	(\Dlpot_{\kappa} \psi)(x)
+	&\coloneqq
+	\int_{\Gamma} \partial_{\n(y)} G_{\kappa}(x,y) \psi(y)\, \textrm{d}\Gamma(y)
+	\quad& x\in \Omega^{\interior} \cup \Omega^{\exterior}
+\end{alignat}
+donde \(G_{\kappa}\) es la función de Green para el caso acústico dada por:
+\begin{equation}\label{green}
+	G_{\kappa} (x,y) = \frac{e^{\i \kappa \abs{x-y}}}{4\pi \abs{x-y}},\quad x\ne y.
+\end{equation}
+Decimos que~\eqref{op:pot:sl} es el \textit{operador potencial
+de primera capa} y~\eqref{op:pot:dl} es el \textit{operador potencial de segunda capa}.
+
+Para la soluciones \(p\) a la ecuación de Helmholtz con un número de onda
+\(\kappa\) dado usamos el ansatz:
+\begin{subequations}\label{eq:ansatz}
+\begin{alignat}{3}
+	p(x) &= (\Slpot f)(x) - (\Dlpot g )(x)
+	&,\quad x\in \Omega^{\interior}\cup\Omega^{\exterior}\\
+\intertext{donde}
+	f &= \traceN^{\,\interior} p - \traceN^{\,\exterior} p\\
+	g &= \traceD^{\,\interior} p - \traceD^{\,\exterior} p
+\end{alignat}
+\end{subequations}
+
+Supondremos que \(\Gamma\) es lo suficientemente suave como para que los
+siguiente operadores de frontera estén bien definidos casi en todas partes.
+\begin{subequations}\label{operadores integrales de frontera}
+\begin{alignat}{4}
+\label{op:int:sl}
+	(\Slop f)(x) &\coloneqq \int_{\Gamma} G(x,y) f(y)
+	&\quad&, x\in \Gamma\\
+\label{op:int:dl}
+	(\Dlop g )(x) &\coloneqq \int_{\Gamma} \partial_{\n(y)} G(x,y) g(y)
+	&\quad&, x\in \Gamma\\
+\label{op:int:adl}
+	(\Adlop f)(x) &\coloneqq \int_{\Gamma} \partial_{\n(x)} G(x,y) f(y)
+	&\quad&, x\in \Gamma\\
+\label{op:int:h}
+	(\Hop g )(x) &\coloneqq -\partial_{\n(x)} \int_{\Gamma} \partial_{\n(y)} G(x,y) g(y)
+	&\quad&, x\in \Gamma
+\end{alignat}
+\end{subequations}
+Así como sus relaciones de salto
+\begin{subequations}\label{relaciones de salto}
+\begin{alignat}{4}
+	\Slop f
+	&= \traceD^{\,\exterior} \left(\Slpot f\right)
+	&&= \traceD^{\,\interior} \left(\Slpot f\right)
+	\\
+	\Dlop g
+	&= \traceD^{\,\exterior} \left(\Dlpot g\right) - \frac{1}{2}g
+	&&= \traceD^{\,\interior} \left(\Dlpot g\right) + \frac{1}{2}g
+	\\
+	\Adlop f
+	&= \traceN^{\,\exterior} \left(\Slpot f\right) + \frac{1}{2}f
+	&&= \traceN^{\,\interior} \left(\Slpot f\right) - \frac{1}{2}f
+	\\
+	\Hop g
+	&= -\traceN^{\,\exterior} \left( \Dlpot g \right)
+	&&= -\traceN^{\,\interior} \left( \Dlpot g \right)
+\end{alignat}
+\end{subequations}
+
+Los operadores integrales de frontera \(\Slop\), \(\Dlop\), \(\Adlop\) y \(\Hop\) son llamados 
+de \textit{primera capa, segunda capa, adjunto de segunda capa} e
+\textit{hipersingular} respectivamente. Nótese que los operadores dependen del
+número de onda. 
+
+\subsection{Soluciones al Problema Exterior}
+\label{ssec:bem:exterior}
+
+Como en el caso analítico, buscaremos soluciones para el campo acústico en
+\(\Omega^{\exterior}\), en particular, \(p_{\interior} = 0\). Una consecuencia
+inmediata es que \(p_{\tot} = p_{\exterior} = p_{\sca} + p_{\inc}\).
+
+\subsubsection{Condiciones de Borde de Dirichlet}
+\label{sssec:bem:exterior:dirichlet}
+
+\noindent Estamos pidiendo la condición
+\begin{equation}\label{bem:condicion dirichlet}
+	\traceD^{\,\exterior} p_{\tot} = 0, \quad \text{ en } \Gamma.
+\end{equation}
+Dado que conocemos \(p_{\inc}\), usaremos~\eqref{eq:ansatz} como ansatz
+para \(p_{\sca}\). Se sigue (usando la continuidad de la onda
+incidente y las condiciones de borde e interior) que
+\begin{alignat*}{2}
+	g
+	&=
+	\traceD^{\,\interior} p_{\sca} - \traceD^{\,\exterior} p_{\sca}
+	&=
+	\traceD^{\,\interior} p_{\exterior}
+	-
+	\traceD^{\,\exterior} p_{\exterior}
+	+
+	\traceD^{\,\exterior} p_{\inc} - \gamma_D^{\interior} p_{\inc}
+	&=
+	0.
+	\\
+	f
+	&=
+	\traceN^{\,\interior} p_{\sca} - \traceN^{\,\exterior} p_{\sca}
+	&=
+	\traceN^{\,\interior} p_{\exterior} - \traceN^{\,\exterior} p_{\exterior}
+	+
+	\traceN^{\,\exterior} p_{\inc} - \traceN^{\,\interior} p_{\inc}
+	&=
+	- \traceN^{\,\exterior} p_{\exterior}.
+\end{alignat*}
+
+De esta forma y poniendo \(\psi = \traceN^{\exterior} p_{\exterior}\), la onda dispersada se lee
+\begin{align}\label{bem:psca:dirichlet}
+	p_{\sca}(x)
+	&=
+	\left[ \Slpot f \right] (x)
+	=
+	-\left[ \Slpot \psi \right](x)
+	,\quad x\in \Omega^{\exterior}.
+\end{align}
+Por lo que si encontramos \(\psi\), obtenemos una expresión para \(p_{\sca}\). 
+
+Aplicando \(\traceD^{\,\exterior}\) a~\eqref{bem:psca:dirichlet} y usando las relaciones
+de salto nos queda que \( \traceD^{\,\exterior} p_{\sca} = -\Slop \psi \).
+De manera similar, aplicando \(\traceN^{\,\exterior}\) obtenemos
+\(\traceN^{\,\exterior} p_{\sca} = -\Adlop \psi + \frac{1}{2} f\).
+Descomponiendo \(p_{\sca} = p_{\exterior} - p_{\inc}\) obtenemos las ecuaciones
+\begin{displaymath}
+	p_{\inc} = \Slop \psi
+	\hspace{1cm}\text{y}\hspace{1cm}
+	\partial_{\n} p_{\inc} = \Adlop \psi + \frac{1}{2} \psi
+\end{displaymath}
+
+\noindent Combinando las ecuaciones bajo un parámetro \(\eta \in \C\) nos queda
+\begin{equation}
+	\left(\frac{1}{2} \Idop + \Adlop + \eta \Slop \right)\psi
+	=
+	\partial_{\n} p_{\inc} + \eta p_{\inc}
+\end{equation}
+Como \(p_{\inc}\) es conocida, podemos resolver para \(\psi\). 
+
+\subsubsection{Condiciones de Borde de Neumann}
+\label{sssec:bem:exterior:neumann}
+
+\noindent Ahora la condición es
+\begin{equation}\label{bem:neumann}
+	\traceN^{\,\exterior} p_{\tot} = 0, \text{ en } \Gamma.
+\end{equation}
+
+\noindent Como antes, esto caracteriza a las funciones \(f\) y \(g\) de la siguiente
+manera:
+\begin{alignat*}{2}
+	f &=
+	\traceN^{\,\interior} p_{\sca} - \traceN^{\,\exterior} p_{\sca}
+	&=
+	\traceN^{\,\interior} p_{\exterior} - \traceN^{\,\exterior} p_{\exterior}
+	+
+	\traceN^{\,\exterior} p_{\inc} - \traceN^{\,\interior} p_{\inc}
+	&= 0\\
+	g &=
+	\traceD^{\,\interior} p_{\sca} - \traceD^{\,\exterior} p_{\sca}
+	&=
+	\traceD^{\,\interior} p_{\exterior} - \traceD^{\,\exterior} p_{\exterior}
+	+
+	\traceD^{\,\exterior} p_{\inc} - \traceD^{\,\interior} p_{\inc}
+	&=
+	-\traceD^{\,\exterior} p_{\exterior}
+\end{alignat*}
+
+Definamos \(\phi \coloneqq \traceD^{\,\exterior} p_{\exterior} = -g\). Luego, la onda
+dispersada se lee:
+\begin{equation}
+	p_{\sca} 
+	= \Dlpot (\traceD^{\,\exterior} p_{\exterior})
+	= \Dlpot \phi
+	,\textrm{ en } \Omega^{\exterior}.
+\end{equation}
+
+Por las relaciones de salto tenemos que
+\(\traceN^{\,\exterior} p_{\sca} = \Hop \phi\) y \(\traceD^{\,\exterior}
+p_{\sca} = \Dlop \phi + (1/2) \phi\). Descomponemos \(p_{\sca} = p_{\exterior} -
+p_{\inc}\). Usando la continuidad de \(p_{\inc}\) y la condición de borde obtenemos
+las siguientes relaciones: 
+\[
+	p_{\inc} = -\left(\Dlop - \frac{1}{2} \Idop \right) \phi
+	\hspace{1cm}\text{y}\hspace{1cm}
+	\partial_{\n} p_{\inc} = -D\phi
+.\]
+
+\noindent Combinando las ecuaciones bajo un parámetro \(\eta \in \C\) nos queda
+\begin{equation}
+	\left(\frac{1}{2} \Idop - \Dlop - \eta \Hop \right) \phi
+	=
+	p_{\inc} + \eta \partial_{\n} p_{\inc}
+\end{equation}
+De nuevo, \(p_{\inc}\) es conocida, por lo que basta resolver para \(\phi\). 
+
+\subsection{Solución al Problema de Transmisión}
+\label{ssec:bem:transmission}
+
+Consiste en agregar las condiciones:
+\begin{subequations}\label{bem:tp}
+	\begin{alignat}{2}
+		\gamma^{\exterior}_{D} p_{\tot}
+		&= 
+		\gamma^{\interior}_{D} p_{\tot} 
+		&\quad&, \textrm{ en } \Gamma
+		\\
+		\frac{1}{\rho^{\exterior}}
+		\gamma^{\exterior}_{N} p_{\tot}
+		&= 
+		\frac{1}{\rho^{\interior}}
+		\gamma^{\interior}_{N} p_{\tot} 
+		&\quad&, \textrm{ en } \Gamma
+	\end{alignat}
+\end{subequations}
+
+Equivalentemente, podemos expresar estas condiciones introduciendo el
+\textit{operador traza de Cauchy}:
+\begin{equation} \label{op:trace:cauchy}
+	\gamma^{\exterior/\interior}
+	=
+	\begin{bmatrix}
+		\traceD^{\exterior/\interior} \\[5pt]
+		\traceN^{\exterior/\interior}
+	\end{bmatrix}.
+\end{equation}
+
+De esta forma, el problema de transmisión queda:
+\begin{equation}
+	\Rho
+	\gamma^{\exterior} p_{\tot} 
+	=
+	\gamma^{\interior} p_{\tot}
+	\quad, \textrm{ en } \Gamma
+\end{equation}
+donde 
+\begin{equation}
+	\Rho
+	= 
+	\begin{bmatrix}
+		1 & 0\\
+		0 & \rho^{\interior}/\rho^{\exterior}	
+	\end{bmatrix}
+\end{equation}
+
+Para la presión acústica total dispersada usaremos el ansatz~\eqref{eq:ansatz}
+con \(p_{\tot}\). 
+
+Por las relaciones de salto se tiene que:
+\begin{alignat}{2}
+	\gamma^{\exterior} p_{\sca}
+	&=
+	\gamma^{\exterior} \left[ \Slpot f - \Dlpot g \right]
+	&&=
+	\left( A^{\exterior} - \frac{1}{2} \Idop \right) 
+	\begin{pmatrix}
+		g \\ f
+	\end{pmatrix}
+	\\
+	\gamma^{\interior} p_{\interior}
+	&=
+	\gamma^{\interior} \left[ \Slpot f - \Dlpot g \right]
+	&&=
+	\left( A^{\interior} + \frac{1}{2} \Idop \right) 
+	\begin{pmatrix}
+		g \\ f
+	\end{pmatrix}
+\end{alignat}
+donde \(A^{\exterior/\interior}\) es el \textit{operador multitraza} dado por:
+\begin{equation}
+	A^{\exterior/\interior} = 
+	\begin{bmatrix}
+		-\Dlop & \Slop \\
+		\Hop & \Adlop
+	\end{bmatrix}.
+\end{equation}
+Notar que los operadores dependen del número de onda \(\kappa\), por lo que en general
+\(A^{\exterior} \ne A^{\interior}\).  
+
+\begin{subequations}
+Para las trazas exteriores, usaremos los potenciales de salto quitando la
+contribución de los términos interiores, es decir \(f = -\traceN^{\exterior}
+p_{\tot}\) y \(g = -\traceD^{\exterior} p_{\tot}\). De esta forma, se tiene que:
+\begin{equation}\label{bem:tp:relacion_ext}
+	\gamma^{\exterior} p_{\sca}
+	=
+	\left( \frac{1}{2} \Idop - A^{\exterior} \right)
+	\gamma^{\exterior} p_{\tot}.
+\end{equation}
+
+Análogamente para las trazas interiores ignoraremos las constribuciones del
+exterior, es decir, \(f = \traceN^{\interior} p_{\tot}\) y \(g =
+\traceD^{\interior} p_{\tot}\). Teniendose que:
+\begin{equation}\label{bem:tp:relacion_int}
+	\gamma^{\interior} p_{\interior}
+	=
+	\left( \frac{1}{2} \Idop + A^{\interior} \right) 
+	\gamma^{\interior} p_{\tot}.
+\end{equation}
+\end{subequations}
+
+Notése que en el interior \(p_{\interior} = p_{\tot}\), por lo que aplicando las
+condiciones de borde~\eqref{bem:tp} a~\eqref{bem:tp:relacion_int} se obtiene:
+\begin{equation}
+	P \gamma^{\exterior} p_{\tot}
+	=
+	\left( \frac{1}{2} \Idop + A^{\interior} \right) 
+	P \gamma^{\exterior} p_{\tot}.
+\end{equation}
+Definiendo \(\tilde{A}^{\interior} = P^{-1} A^{\interior} P\) nos queda que
+\begin{equation}
+	\gamma^{\exterior} p_{\tot}
+	=
+	\left( \frac{1}{2} \Idop + \tilde{A}^{\interior} \right) 
+	\gamma^{\exterior} p_{\tot}.
+\end{equation}
+Restando~\eqref{bem:tp:relacion_ext} nos da la ecuación
+\begin{equation}
+	\gamma^{\exterior} p_{\inc}
+	=
+	\left( A^{\exterior} + \tilde{A}^{\interior} \right) 
+	\gamma^{\exterior} p_{\tot}.
+\end{equation}
+
+\newgeometry{lmargin=2em,rmargin=2em}
+\section{Resumen}
+
+\setlength{\arrayrulewidth}{.25mm}
+\setlength{\tabcolsep}{.5cm}
+\renewcommand{\arraystretch}{2}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ |c|p{4cm}|c|p{4cm}|  }
+	\hline
+	\multicolumn{4}{|c|}{Problema Exterior} \\
+	\hline
+	Variable & Forma & \multicolumn{2}{|c|}{Coeficientes} \\
+	\hline
+	\multirow{2}{2cm}{ \(p_{\sca}\) }
+	& 
+	\multirow{2}{2cm}{ \(\sum_{n=0}^{\infty} a_n h^{(2)}_{n}(\kappa_{\exterior} r) P_{n}(\cos\theta)\) }
+	&
+	Dirichlet& \(a_n = -\dfrac{(2n+1)\i^n j_n(\kappa R)}{h_n^{(2)}(\kappa R)}\) \\[1em]
+	\cline{3-4}
+	&&
+	Neumann& \( a_n = -\dfrac{(2n+1) \i^n j_n'(\kappa R)}{h_{n}^{(2)'}(\kappa R)}\)
+	\\[1em]
+	\hline
+	\multicolumn{4}{|c|}{Problema de Transmisión} \\
+	\hline
+	Variable & Forma & \multicolumn{2}{|c|}{Coeficiente} \\
+	\hline
+	\(p_{\sca}\)
+	& 
+	\(\sum_{n=0}^{\infty} a_n h^{(2)}_{n}(\kappa_{\exterior} r) P_{n}(\cos\theta)\)
+	&
+	\multicolumn{2}{|c|}{\(
+	a_{n} =
+	(2n+1) \i^n
+	\dfrac
+	{%
+		\left[
+			\rho_{\exterior} \kappa_{\interior}
+			j_n(\kappa_{\exterior} R)
+			j'_{n}(\kappa_{\interior} R)
+			-
+			\rho_{\interior} \kappa_{\exterior}
+			j_{n}(\kappa_{\interior} R)
+			j'_{n}(\kappa_{\exterior} R)
+		\right]
+	}
+	{%
+		\rho_{\interior} \kappa_{\exterior}
+		j_{n}(\kappa_{\interior} R)
+		h'^{(2)}_{n}(\kappa_{\exterior} R)
+		-
+		\rho_{\exterior} \kappa_{\interior}
+		j'_{n}(\kappa_{\interior} R)
+		h^{(2)}_{n}(\kappa_{\exterior} R)
+	}\)
+	} \\[1em]
+	\hline
+	\(p_{\interior}\)
+	&
+	\( \sum_{n=0}^{\infty} b_n j_{n}(\kappa_{\interior} r) P_{n}(\cos\theta) \)
+	&
+	\multicolumn{2}{|c|}{\(
+	b_n =
+	\dfrac
+	{
+		(2n + 1) \i^n j_n(\kappa_{\exterior} R) 
+		+ 
+		a_{n} h^{(2)}_{n} (\kappa_{\exterior} R)
+	}
+	{
+		j_{n}(\kappa_{\interior} R)
+	}
+	\)}\\[1em]
+	\hline
+\end{tabular}
+\caption{Fórmulas para soluciones analíticas}
+\end{table}
+
+\appendix
+
+\restoregeometry
+
+\section{Notación}\label{ap:notacion}
+
+El operador del (o nabla) \(\nabla\) está definido por
+\begin{equation}
+	\nabla = \begin{pmatrix} \partial_x \\ \partial_y \\ \partial_z \end{pmatrix}
+,\end{equation}
+donde \(\partial_{\bullet}\) denotará a la derivada parcial con respecto a la variable
+\(\bullet\). Para un campo escalar, el \textit{Laplaciano} está definido como
+\begin{equation}
+	\nabla^2 = \partial^2_x + \partial^2_y + \partial^2_z.
+\end{equation}
+Por otro lado, se recomienda ver el Apéndice~\ref{ap:esfericas} si no se está familiarizado con las
+coordenadas esféricas.
+
+Para \(X\subset \R^3\) denotamos por \(X'\) al conjunto se sus puntos
+límite, \(X^{\circ}\) a sus puntos interiores, \(\overline{X} = X \cup X'\) a su
+clausura y por \(\partial X\) su frontera.
+
+Decimos que \(\Cc^k(X)\) son las funciones \(k\)-veces diferenciable con la
+\(k\)-ésima derivada continua sobre \(X\). Por otro lado, \(L^p(X)\) denota el espacio de
+las funciones medibles sobre \(X\) con norma \(\norm{\cdotp}_{p}\). Por último,
+usamos la notación \(\H^{k}(X)\) para denotar el espacio de Sobolev de orden
+\(k\) asociado a \(L^2\). Si \(X\) se omite se asume que es \(\R^3\) o bien el dominio
+correspondiente en caso de que ya esté definido. En todos los casos las funciones toman
+valores en \(\C\).
+
+\section{Coordenadas esféricas}%
+\label{ap:esfericas}
+
+Tomando las coordenadas usuales como punto de partida, el sistema de referencia
+esférico expresa el espacio tridimensional con respecto a tres
+datos: La distancia al origen (\(r\)), el ángulo con respecto al eje \(z\) y el
+ángulo de la proyección en el plano \(xy\) con el eje \(x\). De manera más
+precisa, las relaciones son las siguientes
+
+\begin{equation}
+\begin{array}{rl}
+	x &= r \sin(\theta) \cos(\varphi) \\
+	y &= r \sin(\theta) \sin(\varphi) \\
+	z &= r \cos(\theta)
+\end{array}
+\,\longleftrightarrow\,
+\begin{array}{rl}
+	r       &= \sqrt{x^2 + y^2 + z^2}\\
+	\theta  &= \arctan \left(y/x\right)\\
+	\varphi &= \arccos \left(z/r\right)
+\end{array}
+\hspace{.5cm}\text{con}\hspace{.5cm}
+\begin{array}{rl}
+	r &\in [0,\infty),\\
+	\theta &\in [0,\pi],\\
+	\varphi &\in [0, 2\pi)
+\end{array}
+\end{equation}
+\subsection{Cambio de coordenadas y derivadas}%
+\label{ap:esfericas:nabla}
+
+Lidiaremos con funciones \(f\colon \R^3 \to \C\) expresadas
+en el sistema de referencia esférico. Dado que operadores como \(\nabla\) están
+expresados en términos de las coordenadas rectángulares, necesitamos una
+expresión de \(\nabla\) para funciones que usan coordenadas esféricas. En
+resumen, \(f\) recibe argumentos en formato \((r,\theta,\varphi)\) y nosotros
+tenemos argumentos del tipo \((x,y,z)\), así que necesitamos una forma de
+comunicar ambos sistemas, y con ello sus operadores asociados.
+
+Consideremos \(T\colon \R^3 \to \R^3\) la función que transforma
+las coordenadas rectangulares en coordenadas esféricas. Explicítamente
+
+\begin{equation}
+	T(x,y,z)
+	=
+	\big(
+		\underbrace{\sqrt{x^2+y^2+z^2}}_{r},
+		\underbrace{\arccos(z/r)}_{\theta}
+		\underbrace{\arctan(y/x)}_{\varphi},
+	\big)
+\end{equation}
+Usando la regla de la cadena tenemos
+
+\begin{align*}
+	D(f\circ T)
+	&=
+	Df(T)\cdot DT
+	\\&=
+	\begin{pmatrix}
+	\partial_{r} & \partial_{\theta} & \partial_{\varphi}\\
+	\end{pmatrix}
+	\cdot
+	\begin{pmatrix}
+	\sin\theta\cos\varphi &
+	\sin\theta\sin\varphi &
+	\cos\theta
+	\\
+	\frac{1}{r} \cos\theta\cos\varphi &
+	\frac{1}{r} \cos\theta\sin\varphi &
+	-\frac{1}{r} \sin\theta
+	\\
+	-\frac{1}{r} \frac{\sin\varphi}{\sin\theta} &
+	\frac{1}{r} \frac{\cos\varphi}{\sin\theta} &
+	0
+	\end{pmatrix}
+\end{align*}
+
+Se concluye que
+
+\begin{align}\label{ap:esfericas:nabla}
+	\nabla f
+	&=
+	\begin{bmatrix}
+		\partial_{x} f \\[2pt]
+		\partial_{y} f \\[2pt]
+		\partial_{z} f \\[2pt]
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+	\sin\theta\cos\varphi \partial_{r}
+	+\frac{1}{r} \cos\theta\cos\varphi \partial_{\theta}
+	-\frac{1}{r} \frac{\sin\varphi}{\sin\theta} \partial_{\varphi}
+	\\[2pt]
+	\sin\theta\sin\varphi \partial_{r}
+	+\frac{1}{r} \cos\theta\sin\varphi \partial_{\theta}
+	+\frac{1}{r} \frac{\cos\varphi}{\sin\theta} \partial_{\varphi}
+	\\[2pt]
+	\cos\theta \partial_{r}
+	-\frac{1}{r} \sin\theta \partial_{\theta}
+	\end{bmatrix}
+\end{align}
+
+\subsection{Laplaciano escalar}%
+\label{ap:esfericas:laplaciano}
+
+En esta sección derivaremos el operador \(\nabla^2\) en coordenadas esféricas. Recordar que para
+\(f\colon \R^3 \to \C\) se define su Laplaciano como
+
+\begin{equation}
+	\nabla^2 f = \partial^2_{x} f + \partial^2_{y} f + \partial^2_{z} f
+.\end{equation}
+Veamos cada sumando por separado y después juntaremos todo. Usaremos las
+fórmulas derivadas en la sección anterior. Por simplicidad, omitiremos la
+función e interpretaremos \(\partial_{\cdot}\) como un operador.
+
+Comenzamos con la derivada con respecto a \(x\)
+\begin{align*}
+	\partial^2_{x}
+	&=
+	\partial_{x}
+	\underbrace{
+	\left(
+		\sin\theta\cos\varphi \partial_{r}
+		+
+		\frac{1}{r} \cos\theta\cos\varphi \partial_{\theta}
+		-
+		\frac{1}{r} \frac{\sin\varphi}{\sin\theta} \partial_{\varphi}
+	\right)
+	}_{\eqqcolon \zeta}
+	\\&=
+	\sin\theta\cos\varphi \partial_{r}(\zeta)
+	+
+	\frac{1}{r} \cos\theta\cos\varphi \partial_{\theta} (\zeta)
+	-
+	\frac{1}{r} \frac{\sin\varphi}{\sin\theta} \partial_{\varphi} (\zeta)
+\end{align*}
+
+Aplicando los operadores a \(\zeta\) nos queda
+
+\begin{align*}
+	\partial_{r}(\zeta)
+	&=
+	\sin\theta \cos\varphi
+	\partial^2_r
+	+
+	\cos\theta \cos\varphi
+	\left[
+		-\frac{1}{r^2} \partial_{\theta}
+		+
+		\frac{1}{r} \partial_{r} \partial_{\theta}
+	\right]
+	-
+	\frac{\sin\varphi}{\sin\theta}
+	\left[
+		-\frac{1}{r^2} \partial_{\varphi}
+		+
+		\frac{1}{r} \partial_{r} \partial_{\varphi}
+	\right]
+	\\
+	\partial_{\theta}(\zeta)
+	&=
+	\cos\varphi
+	\left[
+		\cos\theta \partial_{r}
+		+
+		\sin\theta \partial_{\theta} \partial_{r}
+	\right]
+	+
+	\frac{1}{r} \cos\varphi
+	\left[
+		-\sin\theta \partial_{\theta}
+		+
+		\cos\theta \partial^2_{\theta}
+	\right]
+	- \frac{1}{r} \sin\varphi
+	\left[
+		-\frac{\cos\theta}{\sin^2\theta} \partial_{\varphi}
+		+
+		\frac{1}{\sin\theta} \partial_{\theta} \partial_{\varphi}
+	\right]
+	\\
+	\partial_{\varphi} (\zeta)
+	&=
+	\sin\theta
+	\left[
+		-\sin\varphi \partial_{r}
+		+
+		\cos\varphi \partial_{\varphi} \partial_{r}
+	\right]
+	+
+	\frac{1}{r} \cos\theta
+	\left[
+		-\sin\varphi \partial_{\theta}
+		+
+		\cos\varphi \partial_{\varphi} \partial_{\theta}
+	\right]
+	- \frac{1}{r\sin\theta}
+	\left[
+		\cos\varphi \partial_{\varphi}
+		+
+		\sin\varphi \partial^2_{\varphi}
+	\right]
+\end{align*}
+
+Juntando todo y agrupando coeficientes se tiene
+
+\begin{align*}
+	\partial^2_x
+	&=
+	\left[
+		\sin^2\theta \cos^2\varphi
+	\right]
+	\partial^2_{r}
+	+
+	\left[
+		\frac{1}{r^2} \cos^2\theta \cos^2\varphi
+	\right]
+	\partial^2_{\theta}
+	+
+	\left[
+		\frac{1}{r^2} \frac{\sin^2\varphi}{\sin^2\theta}
+	\right]
+	\partial^2_{\varphi}
+	\\&+
+	\left[
+		\frac{1}{r} \cos^2\theta \cos^2\varphi
+		+
+		\frac{1}{r} \sin^2\varphi
+	\right]
+	\partial_{r}
+	+
+	\left[
+		-\frac{2}{r^2} \sin\theta \cos\theta \cos^2\varphi
+		+
+		\frac{1}{r^2} \frac{\cos\theta}{\sin\theta} \sin^2\varphi
+	\right]
+	\partial_{\theta}
+	\\&+
+	\left[
+		\frac{1}{r^2} \sin\varphi \cos\varphi
+		+
+		\frac{1}{r^2} \frac{\cos^2\theta}{\sin^2\theta} \sin\varphi \cos\varphi
+		+
+		\frac{1}{r^2} \frac{\sin\varphi \cos\varphi}{\sin^2 \theta}
+	\right]
+	\partial_{\varphi}
+	+
+	\left[
+		\frac{2}{r} \sin\theta \cos\theta \cos^2 \varphi
+	\right]
+	\partial_{r} \partial_{\theta}
+	\\&+
+	\left[
+		-\frac{2}{r} \sin\varphi \cos\varphi
+	\right]
+	\partial_{r} \partial_{\varphi}
+	+
+	\left[
+		-\frac{2}{r^2} \frac{\cos\theta}{\sin\theta} \sin\varphi \cos\varphi
+	\right]
+	\partial_{\theta} \partial_{\varphi}
+\end{align*}
+
+De manera similar, la derivada con respecto a \(y\)
+\begin{align*}
+	\partial^2_{y}
+	&=
+	\partial_{y}
+	\underbrace{%
+	\left(
+		\sin\theta\sin\varphi \partial_{r}
+		+ \frac{1}{r} \cos\theta\sin\varphi \partial_{\theta}
+		+ \frac{1}{r} \frac{\cos\varphi}{\sin\theta} \partial_{\varphi}
+	\right)
+	}_{\eqqcolon \eta}
+	\\&=
+	\sin\theta\sin\varphi \partial_{r} (\eta)
+	+\frac{1}{r} \cos\theta\sin\varphi \partial_{\theta} (\eta)
+	+\frac{1}{r} \frac{\cos\varphi}{\sin\theta} \partial_{\varphi} (\eta)
+\end{align*}
+
+Aplicamos los operadores a \(\eta\).
+
+\begin{align*}
+	\partial_{r}(\eta)
+	&=
+	\sin\theta \sin\varphi \partial^2_r
+	+
+	\cos\theta \sin\varphi
+	\left[
+		-\frac{1}{r^2} \partial_{\theta}
+		+
+		\frac{1}{r} \partial_{r} \partial_{\theta}
+	\right]
+	+
+	\frac{\cos\varphi}{\sin\theta}
+	\left[
+		-\frac{1}{r^2} \partial_{\varphi}
+		+
+		\frac{1}{r} \partial_r \partial_{\varphi}
+	\right]
+	\\
+	\partial_{\theta}(\eta)
+	&=
+	\sin\varphi
+	\left[
+		\cos\theta \partial_{r}
+		+
+		\sin\theta \partial_{\theta} \partial_{r}
+	\right]
+	+
+	\frac{1}{r} \sin\varphi
+	\left[
+		-\sin\theta \partial_{\theta}
+		+
+		\cos\theta \partial^2_{\theta}
+	\right]
+	+
+	\frac{1}{r} \cos\varphi
+	\left[
+		-\frac{\cos\theta}{\sin^2\theta} \partial_{\varphi}
+		+
+		\frac{1}{\sin\theta} \partial_{\theta} \partial_{\varphi}
+	\right]
+	\\
+	\partial_{\varphi} (\eta)
+	&=
+	\sin\theta
+	\left[
+		\cos\varphi \partial_{r}
+		+
+		\sin\varphi \partial_{\varphi} \partial_{r}
+	\right]
+	+
+	\frac{1}{r} \cos\theta
+	\left[
+		\cos\varphi \partial_{\theta}
+		+
+		\sin\varphi \partial_{\varphi} \partial_{\theta}
+	\right]
+	+
+	\frac{1}{r} \frac{1}{\sin\theta}
+	\left[
+		-\sin\varphi \partial_{\varphi}
+		+
+		\cos\varphi \partial^2_{\varphi}
+	\right]
+\end{align*}
+
+Todo junto queda
+
+\begin{align*}
+	\partial^2_{y}
+	&=
+	\left[
+		\sin^2\theta \sin^2\varphi
+	\right]
+	\partial^2_r
+	+
+	\left[
+		+\frac{1}{r^2} \cos^2\theta \sin^2\varphi
+	\right]
+	\partial^2_{\theta}
+	+
+	\left[
+		\frac{1}{r^2} \frac{\cos^2\varphi}{\sin^2\theta}
+	\right]
+	\partial^2_{\varphi}
+	\\&+
+	\left[
+		\frac{1}{r} \cos^2\theta \sin^2 \varphi
+		+
+		\frac{1}{r} \cos^2 \varphi
+	\right]
+	\partial_{r}
+	+
+	\left[
+		-\frac{2}{r^2} \sin\theta \cos\theta \sin^2\varphi
+		+
+		\frac{1}{r^2} \frac{\cos\theta}{\sin\theta} \cos^2\varphi
+	\right]
+	\partial_{\theta}
+	\\&+
+	\left[
+		-\frac{1}{r^2} \sin\varphi \cos\varphi
+		-\frac{1}{r^2} \frac{\cos^2\theta}{\sin^2\theta} \sin\varphi \cos\varphi
+		-\frac{1}{r^2} \frac{\sin\varphi \cos\varphi}{\sin^2\theta}
+	\right]
+	\partial_{\varphi}
+	+
+	\left[
+		\frac{2}{r} \sin\theta\cos\theta \sin^2\varphi
+	\right]
+	\partial_{r} \partial_{\theta}
+	\\&+
+	\left[
+		\frac{2}{r} \sin\varphi \cos\varphi
+	\right]
+	\partial_{r} \partial_{\varphi}
+	+
+	\left[
+		\frac{2}{r^2} \frac{\cos\theta}{\sin\theta} \sin\varphi \cos\varphi
+	\right]
+	\partial_{\theta} \partial_{\varphi}
+\end{align*}
+
+Ahora veamos la derivada con respecto a \(z\)
+\begin{align*}
+	\partial^2_z
+	&=
+	\partial_z
+	\underbrace{
+	\left(
+		\cos\theta \partial_{r}
+		-
+		\frac{1}{r} \sin\theta \partial_{\theta}
+	\right)
+	}_{\eqqcolon \xi}
+	\\&=
+	\cos\theta \partial_{r}(\xi)
+	-
+	\frac{1}{r} \sin\theta \partial_{\theta} (\xi)
+\end{align*}
+
+Como antes, aplicamos los operadores a \(\xi\)
+
+\begin{align*}
+	\partial_{r} (\xi)
+	&=
+	\cos\theta \partial^2_r
+	-
+	\sin\theta
+	\left[
+		-\frac{1}{r^2} \partial_{\theta}
+		+
+		\frac{1}{r} \partial_{r} \partial_{\theta}
+	\right]
+	\\
+	\partial_{\theta} (\xi)
+	&=
+	- \sin\theta \partial_{r}
+	+ \cos\theta \partial_{\theta} \partial_{r}
+	- \frac{1}{r}
+	\left[
+		\cos\theta \partial_{\theta}
+		+
+		\sin\theta \partial^2_{\theta}
+	\right]
+\end{align*}
+
+Juntando todo y agrupando términos
+
+\begin{align*}
+	\partial^2_{z}
+	&=
+	\left[
+		\cos^2\theta
+	\right]
+	\partial^2_r
+	+
+	\left[
+		\frac{1}{r^2} \sin^2\theta
+	\right]
+	\partial^2_{\theta}
+	+
+	\left[
+		\frac{1}{r} \sin^2\theta
+	\right]
+	\partial_{r}
+	+
+	\left[
+		\frac{2}{r^2} \sin\theta \cos\theta
+	\right]
+	\partial_{\theta}
+	+
+	\left[
+		-\frac{2}{r} \sin\theta \cos\theta
+	\right]
+	\partial_{r} \partial_{\theta}
+\end{align*}
+
+Finalmente, juntamos todos los términos en \(\partial^2_x, \partial^2_y\) y
+\(\partial^2_z\). Agrupando por operadores nos deja
+
+\begin{equation}
+\label{eq:laplaciano_esfericas_v1}
+	\nabla^2
+	=
+	\partial^2_r
+	+
+	\frac{1}{r^2}
+	\partial^2_{\theta}
+	+
+	\frac{1}{r^2 \sin^2\theta}
+	\partial^2_{\varphi}
+	+
+	\frac{2}{r}
+	\partial_{r}
+	+
+	\frac{1}{r^2} \frac{\cos\theta}{\sin\theta}
+	\partial_{\theta}
+\end{equation}
+
+Para dejarlo de la forma estándar (sin derivadas de orden superior explícitas),
+notamos que por regla del producto en los términos con derivadas superiores,
+se tiene
+\begin{equation}
+	\partial^2_r + \frac{2}{r} \partial_{r}
+	=
+	\frac{1}{r^2} \left(r^2 \partial_{r}\right)
+\end{equation}
+y
+\begin{equation}
+	\frac{1}{r^2} \partial^2_{\theta} + \frac{1}{r^2} \frac{\cos\theta}{\sin\theta} \partial_{\theta}
+	=
+	\frac{1}{r^2\sin\theta} \partial_{\theta} \left(\sin\theta \partial_{\theta} \right)
+.\end{equation}
+
+Por lo que el Laplaciano se puede expresar de la siguiente forma
+
+\begin{equation}
+\label{eq:laplaciano_esfericas_v2}
+	\nabla^2
+	=
+	\frac{1}{r^2} \partial_{r} \left(r^2 \partial_{r} \right)
+	+
+	\frac{1}{r^2\sin\theta} \partial_{\theta} \left(\sin\theta \partial_{\theta} \right)
+	+
+	\frac{1}{r^2\sin^2\theta} \partial^2_{\varphi}
+\end{equation}
+
+% Apendice funciones especiales
+\section{Funciones especials}\label{ap:fn especiales}
+
+\subsection{Funciones de Bessel esféricas}%
+\label{ap:funciones especiales:bessel}
+
+Son las dos soluciones \(j_n\) y \(y_n\) linealmente independientes de la ecuación
+\begin{displaymath}
+\label{eq:bessel:esfericas}
+	x^2 \dd{x} y + 2x \d{x} y + \left(x^2 - n(n+1)\right) y = 0
+.\end{displaymath}
+La solución \(j_n\) se dice de primer tipo, mientras que \(y_n\) es la de
+segundo tipo (también llamada \textit{función esférica de Neumann}).
+
+\subsection{Funciones de Legendre}
+\label{ap:funciones especiales:legendre}
+
+Son las soluciones \(P_n^m\) y \(Q_n^m\) a la ecuación
+\begin{displaymath}
+\label{eq:legendre}
+	(1-x^2) \dd{x} y - 2 x \d{x} y + \left(n(n+1) - \frac{m^2}{1-x^2}\right) y
+	= 0.
+\end{displaymath}
+Se dicen de primer y segundo tipo respectivamente. Cuando \(m=0\) resultan los
+polinomios de Legendre, que equivalen a aplicar el algoritmo de Gram-Schmidt
+(sin normalizar) a la base polinómica canónica (i.e. \(1, x, x^2, \dots\)) con
+el producto interno \(L^2\).
+\end{document}
