@@ -166,8 +166,10 @@ de Helmholtz se lee
 \label{helmholtz}
 	\nabla^2 \psi + \kappa^2 \psi = 0
 ,\end{equation}
-donde \(\kappa\) es una constante. En coordenadas esféricas queda
-(ver Apéndice~\ref{ap:esfericas})
+donde \(\kappa\) es una constante. En coordenadas esféricas, donde para un
+vector \((x,y,z)\in \R^3\) denotamor por \(r\) su componente radial, por 
+\(\theta\) su componente polar y \(\varphi\) su componente azimutal 
+(ver Apéndice~\ref{ap:esfericas}) nos queda:
 
 \begin{equation}\label{helmholtz:esfericas}
 	\frac{1}{r^2} \partial_{r} \left(r^2 \partial_{r} \psi\right)
@@ -404,8 +406,8 @@ donde \(\x,\dir \in \R^3\) describen una posición en el espacio y
 la dirección de propagación (unitaria) de la onda respectivamente. La constante
 \(\kappa_{\exterior}\) es el número de onda en \(\Omega^{\exterior}\).
 
-Por la simetría radial, sin pérdida de generalidad tomaremos la dirección
-\(\dir = (0,0,1)\). Es decir, la onda
+Dado que la esfera es simétrica, la dirección de onda incidente es indiferente,
+por lo tanto, tomaremos la dirección \(\dir = (0,0,1)\). Es decir, la onda
 incidente viaja a paralela al eje \(+z\). En símbolos, la onda incidente en
 coordenadas esféricas se lee 
 \[
@@ -416,6 +418,7 @@ coordenadas esféricas se lee
 	j_{n} (\kappa_{\exterior} r)
 	P_{n} (\cos\theta).
 \]
+Esto nos da una simetría azimutal.
 
 \section{Soluciones Analíticas}
 
@@ -460,10 +463,13 @@ Por lo tanto:
 	=
 	C_{3,n,0}
 \end{equation}
+Nótese que esto es consistente con la simetría azimutal antes mencionada, pues si
+no fuese constante se rompería dicha simetría.
+
 Por último, dado que \(p_{\sca}\) debe satisfacer la condición de radiación de
 Sommerfeld~\eqref{sommerfeld}, el componente radial será de la forma~\eqref{f2}
 con \(C_{1,n,0} = 0\) pues \(p_{\sca}\) debe ser una onda viajera hacia infinito (ver
-Apéndice~\ref{ap:fn especiales:ondas viajeras}). De esta forma, la ecuación que
+Apéndice~\ref{ap:fn especiales}). De esta forma, la ecuación que
 describe a la onda dispersada en \(\R^3\setminus\Omega^{\interior}\) es de la
 forma
 \begin{equation}\label{psca:forma}
@@ -476,7 +482,7 @@ forma
 .\end{equation}
 
 \noindent Por~\eqref{bc:dirichlet} y usando que los polinomios de Legendre son
-ortogonales, los coeficientes de \(p_{\inc}\) son
+ortogonales, los coeficientes de \(p_{\sca}\) son
 \begin{equation}\label{ext:psca:coef:dirichlet}
 	\alpha_n 
 	= 
@@ -547,6 +553,7 @@ se tiene que:
 		\partial_r h_n^{(2)}(\kappa_{\exterior} R)
 	}
 \end{equation}
+Notar que \(j_n\) es una función univariada, por lo que \(\partial_r = \d{r}\).
 
 \subsection{Solución al Problema de Transmisión}
 \label{sec:a:transmission}
@@ -793,16 +800,20 @@ siguiente operadores de frontera estén bien definidos casi en todas partes.
 \begin{subequations}\label{operadores integrales de frontera}
 \begin{alignat}{4}
 \label{op:int:sl}
-	(\Slop f)(x) &\coloneqq \int_{\Gamma} G(x,y) f(y)
+	(\Slop f)(x) &\coloneqq
+	\int_{\Gamma} G(x,y) f(y) \textrm{dy}
 	&\quad&, x\in \Gamma\\
 \label{op:int:dl}
-	(\Dlop g )(x) &\coloneqq \int_{\Gamma} \partial_{\n(y)} G(x,y) g(y)
+	(\Dlop g )(x) &\coloneqq
+	\int_{\Gamma} \partial_{\n(y)} G(x,y) g(y) \textrm{dy}
 	&\quad&, x\in \Gamma\\
 \label{op:int:adl}
-	(\Adlop f)(x) &\coloneqq \int_{\Gamma} \partial_{\n(x)} G(x,y) f(y)
+	(\Adlop f)(x) &\coloneqq
+	\int_{\Gamma} \partial_{\n(x)} G(x,y) f(y) \textrm{dy}
 	&\quad&, x\in \Gamma\\
 \label{op:int:h}
-	(\Hop g )(x) &\coloneqq -\partial_{\n(x)} \int_{\Gamma} \partial_{\n(y)} G(x,y) g(y)
+	(\Hop g )(x) &\coloneqq 
+	-\partial_{\n(x)} \int_{\Gamma} \partial_{\n(y)} G(x,y) g(y)\textrm{dy}
 	&\quad&, x\in \Gamma
 \end{alignat}
 \end{subequations}
@@ -1731,7 +1742,7 @@ Por lo que el Laplaciano se puede expresar de la siguiente forma
 % Apendice funciones especiales
 \section{Funciones especials}\label{ap:fn especiales}
 
-\subsection{Funciones de Bessel esféricas}%
+\subsection{Funciones esféricas de Bessel}%
 \label{ap:funciones especiales:bessel}
 
 Son las dos soluciones \(j_n\) y \(y_n\) linealmente independientes de la ecuación
@@ -1741,6 +1752,88 @@ Son las dos soluciones \(j_n\) y \(y_n\) linealmente independientes de la ecuaci
 .\end{displaymath}
 La solución \(j_n\) se dice de primer tipo, mientras que \(y_n\) es la de
 segundo tipo (también llamada \textit{función esférica de Neumann}).
+
+En base a las propiedades expuestas en \textit{Digital Library of Mathematical
+Functions}\footnote{https://dlmf.nist.gov/10.49}. Tenemos que
+\begin{alignat*}{2}
+	j_n(z)
+	&=
+	A_0 \sin(z - \frac{1}{2} n \pi) 
+	+
+	A_1 \cos(z - \frac{1}{2} n \pi)
+	\\
+	y_n(z)
+	&=
+	- A_0 \cos(z - \frac{1}{2} n \pi)
+	+ A_1 \sin(z - \frac{1}{2} n \pi)
+\end{alignat*}
+donde 
+\begin{alignat*}{3}
+	A_0 &= 
+	\sum_{k=0}^{\lfloor n/2 \rfloor} 
+		(-1)^k \frac{a_{2k} (n + \frac{1}{2}) }{z^{2k + 1}}  
+	\\
+	A_1 &=
+	\sum_{k=0}^{\lfloor (n-1)/2 \rfloor}
+		(-1)^k \frac{a_{2k+1}(n + \frac{1}{2}) }{z^{2k+2}} 
+	\\
+	a_k (n + \frac{1}{2})
+	&=
+	\begin{cases}
+		\frac{(n+k)!}{2^k k! (n-k)!} &, k=0,\dots, n, \\
+		0 &, k=n+1, n+2, \dots
+	\end{cases}
+\end{alignat*}
+
+Nótese que \(j_n \vert_{\R}\) es una función real. Usando que 
+\begin{displaymath}
+	\sin(z) = \frac{e^{\i z} - e^{-\i z}}{2 \i}
+	\hspace{1cm}
+	\cos(z) = \frac{e^{\i z} + e^{-\i z}}{2} 
+\end{displaymath}
+Obtenemos que para \(\kappa\in \R\), \(j_n\) y \(y_n\) representan ondas
+estacionarias. En efecto,
+\begin{displaymath}
+	j_n(\kappa r) e^{\i \omega t}
+	=
+	\frac{(A_1 + \i A_0)}{2} e^{\i (z - \frac{1}{2} n \pi + \omega t)}
+	+
+	\frac{(A_1 - \i A_0)}{2} e^{\i (\omega t - (z - \frac{1}{2} n \pi))}
+\end{displaymath}
+y
+\begin{displaymath}
+	y_n(\kappa r) e^{\i \omega t}
+	=
+	\frac{-A_0 - \i A_1}{2} e^{\i (\kappa r - \frac{1}{2} n \pi + \omega t)}
+	+
+	\frac{-A_0 + \i A_1}{2} e^{\i (\omega t - (\kappa r - \frac{1}{2} n \pi))} 
+\end{displaymath}
+Con esto podemos ver que \(h^{(1)}_n\) y \(h^{(2)}_n\) representan ondas
+viajeras, pues,
+\begin{displaymath}
+	h^{(1)}_n(\kappa r) e^{\i \omega t}
+	=
+	j_n(\kappa r) e^{\i \omega t}
+	+
+	\i y_n(\kappa r) e^{\i \omega t}
+	=
+	A_1 e^{\i (\kappa r - \frac{1}{2} n \pi + \omega t)}
+	+
+	\i A_0 e^{\i (\omega t - (\kappa r - \frac{1}{2} n \pi))}
+\end{displaymath}
+y
+\begin{displaymath}
+	h^{(2)}_n(\kappa r) e^{\i \omega t}
+	=
+	j_n(\kappa r) e^{\i \omega t}
+	-
+	\i y_n(\kappa r) e^{\i \omega t}
+	=
+	\i A_0 e^{\i (\kappa r - \frac{1}{2} n \pi + \omega t)}
+	+
+	A_1 e^{\i (\omega t - (\kappa r - \frac{1}{2} n \pi))}
+\end{displaymath}
+Nótese que \(h^{(1)}_n\) viajan a \(-r\) y \(h^{(2)}_n\) viajan \(+r\).
 
 \subsection{Funciones de Legendre}
 \label{ap:funciones especiales:legendre}
