@@ -390,14 +390,18 @@ Adicionalmente, la onda dispersada debe cumplir la \textit{condición de radiaci
 \end{equation}
 \end{subequations}
 
-Una onda plana se puede modelar como una combinación lineal de ondas esféricas
-de la siguiente forma:
+Para una solución a la ecuación de onda es de la forma 
+\begin{displaymath}
+	u(t,\x) = p(\x) e^{-\i \omega t}
+\end{displaymath}
+Una onda plana \(p_{\textrm{plana}}\) se puede modelar como una 
+combinación lineal de ondas esféricas de la siguiente forma:
 \[
 	e^{\i \kappa_{\exterior}\, \x \cdot \dir}
 	=
 	\sum_{n=0}^{\infty}
 	(2n+1) \i^{n}
-	j_{n} (\kappa_{\exterior} \norm{x})
+	j_{n} (\kappa_{\exterior} \norm{\x})
 	P_{n} (\hat{\x} \cdot \dir)
 	,\qquad
 	\hat{\x} = \x/\norm{\x}
@@ -408,8 +412,8 @@ la dirección de propagación (unitaria) de la onda respectivamente. La constant
 
 Dado que la esfera es simétrica, la dirección de onda incidente es indiferente,
 por lo tanto, tomaremos la dirección \(\dir = (0,0,1)\). Es decir, la onda
-incidente viaja a paralela al eje \(+z\). En símbolos, la onda incidente en
-coordenadas esféricas se lee 
+incidente viaja a paralela al eje \(z\) hacia \(+z\). En símbolos, la onda 
+incidente en coordenadas esféricas se lee 
 \[
 	e^{\i \kappa_{\exterior} r \cos\theta}
 	=
@@ -468,7 +472,7 @@ no fuese constante se rompería dicha simetría.
 
 Por último, dado que \(p_{\sca}\) debe satisfacer la condición de radiación de
 Sommerfeld~\eqref{sommerfeld}, el componente radial será de la forma~\eqref{f2}
-con \(C_{1,n,0} = 0\) pues \(p_{\sca}\) debe ser una onda viajera hacia infinito (ver
+con \(D_{1,n,0} = 0\) pues \(p_{\sca}\) debe ser una onda viajera hacia infinito (ver
 Apéndice~\ref{ap:fn especiales}). De esta forma, la ecuación que
 describe a la onda dispersada en \(\R^3\setminus\Omega^{\interior}\) es de la
 forma
@@ -476,8 +480,8 @@ forma
 	p_{\sca}
 	=
 	\sum_{n=0}^{\infty}
-	\underbrace{D_{1,n,0} C_{2,n,0} C_{3,n,0}}_{\eqqcolon \alpha_n}
-		h_{n}^{(2)}(\kappa_{\exterior} r)
+	\underbrace{C_{1,n,0} C_{2,n,0} C_{3,n,0}}_{\eqqcolon \alpha_n}
+		h^{(1)}_{n}(\kappa_{\exterior} r)
 		P_{n}(\cos\theta)
 .\end{equation}
 
@@ -491,7 +495,7 @@ ortogonales, los coeficientes de \(p_{\sca}\) son
 		(2n+1)\i^n j_n(\kappa_{\exterior} R)
 	}
 	{
-		h_n^{(2)}(\kappa_{\exterior} R)
+		h^{(1)}_{n} (\kappa_{\exterior} R)
 	}
 \end{equation}
 
@@ -535,8 +539,8 @@ la onda dispersada es:
 	p_{\sca}
 	=
 	\sum_{n=0}^{\infty}
-	\underbrace{D_{1,n,0} C_{2,n,0} C_{3,n,0}}_{\eqqcolon \beta_n}
-		h_{n}^{(2)}(\kappa_{\exterior} r)
+	\underbrace{C_{1,n,0} C_{2,n,0} C_{3,n,0}}_{\eqqcolon \beta_n}
+		h^{(1)}_{n}(\kappa_{\exterior} r)
 		P_{n}(\cos\theta)
 \end{equation}
 donde, por~\eqref{bc:neumann} y la ortogonalidad de los polinomios de Legendre
@@ -550,7 +554,7 @@ se tiene que:
 		(2n+1) \i^n \partial_{r} j_n(\kappa_{\exterior} R)
 	}
 	{
-		\partial_r h_n^{(2)}(\kappa_{\exterior} R)
+		\partial_r h_n^{(1)}(\kappa_{\exterior} R)
 	}
 \end{equation}
 Notar que \(j_n\) es una función univariada, por lo que \(\partial_r = \d{r}\).
@@ -591,18 +595,14 @@ Sommerfeld~\eqref{sommerfeld}, su componente radial debe ser de la forma
 	f^{\sca}_{n}(r)
 	=
 	C_{1,m,n} h^{(1)}_{n}(\kappa_{\exterior} r)
-	+
-	D_{1,m,n} h^{(2)}_{n}(\kappa_{\exterior} r),
 \end{equation}
-pues necesitamos ondas viajeras.
+pues necesitamos ondas viajeras en sentido positivo.
 
 De manera análoga, el componente radial de la onda interior debe ser de la forma
 \begin{equation}
 	f^{\interior}_{n}(r)
 	=
 	A_{1,n,m} j_{n}(\kappa_{\interior} r)
-	+
-	B_{1,n,m} y_{n}(\kappa_{\interior} r),
 \end{equation}
 que corresponde con ondas estacionarias.
 
@@ -610,7 +610,7 @@ Con el fin de tener una base para comparar, tomaremos \(g^{\sca/\interior}\) de
 la forma \(g^{\sca/\interior}_{n} = C^{\sca}_{2,n,0} P_{n} +
 D^{\interior}_{2,n,0} Q_{n}\) y pondremos \(D^{\sca/\interior}_{2,n,0} = 0\). 
 En consecuencia, \(h^{\sca/\interior}_{n} = C_{3,n,0}^{\sca/\interior}\) una
-constante (pues escogemos \(m=0\)).
+constante\footnote{Esto es consistente con la simetría azimutal.}.
 De esta forma, la onda dispersada e interior son de la forma:
 \begin{alignat}{2}
 	p_{\sca}(r,\theta,\varphi)
@@ -618,8 +618,6 @@ De esta forma, la onda dispersada e interior son de la forma:
 	\sum_{n=0}^{\infty}
 	\left[
 		C_{1,n,0} C^{\sca}_{2,n,0} C^{\sca}_{3,n,0} h^{(1)}_{n}(\kappa_{\exterior} r)
-		+
-		D_{1,n,0} C^{\sca}_{2,n,0} C^{\sca}_{3,n,0} h^{(2)}_{n}(\kappa_{\exterior} r)
 	\right] P_{n}(\cos\theta)
 	\\
 	p_{\interior}(r,\theta,\varphi)
@@ -627,45 +625,22 @@ De esta forma, la onda dispersada e interior son de la forma:
 	\sum_{n=0}^{\infty}
 	\left[
 		A_{1,n,0} C^{\interior}_{2,n,0} C^{\interior}_{3,n,0} j_{n}(\kappa_{\interior} r)
-		+
-		B_{1,n,0} C^{\interior}_{2,n,0} C^{\interior}_{3,n,0} y_{n}(\kappa_{\interior} r)
 	\right] P_{n}(\cos\theta),
 \end{alignat}
 
-Simplificando la notación de manera correspondiente tenemos que:
-\begin{alignat}{2}
-	p_{\sca}(r,\theta,\varphi)
-	&=
-	\sum_{n=0}^{\infty}
-	\left[
-		\sigma^{1}_{n} h^{(1)}_{n}(\kappa_{\exterior} r)
-		+
-		\sigma^{2}_{n} h^{(2)}_{n}(\kappa_{\exterior} r)
-	\right] P_{n}(\cos\theta)
-	\\
-	p_{\interior}(r,\theta,\varphi)
-	&=
-	\sum_{n=0}^{\infty}
-	\left[
-		\iota^{1}_{n} j_{n}(\kappa_{\interior} r)
-		+
-		\iota^{2}_{n} y_{n}(\kappa_{\interior} r)
-	\right] P_{n}(\cos\theta),
-\end{alignat}
-
-Dado que tenemos cuatro incógnitas y dos ecuaciones~\eqref{eq:transmision}, impondremos
-\(\sigma^{1}_{n} = 0\) y \(\iota^{2}_{n} = 0\). De esta forma y por~\eqref{eq:transmision}
-tenemos que
+Denotemos por \(\sigma_n\) al los coeficientes de \(p_{\sca}\) y por 
+\(\iota_n\) al los coeficientes de \(p_{\inc}\). De esta forma y 
+por~\eqref{eq:transmision} tenemos que
 \begin{alignat}{2}
 	\sum_{n=0}^{\infty}
 	\left[
 		(2n + 1) \i^n j_{n}(\kappa_{\exterior} R)
 		+
-		\sigma^{2}_{n} h^{(2)}_{n}(\kappa_{\exterior} R)
+		\sigma_{n} h^{(1)}_{n}(\kappa_{\exterior} R)
 	\right] P_{n}(\cos\theta)
 	&=
 	\sum_{n=0}^{\infty}
-		\iota^{1}_{n} j_{n} (\kappa_{\interior} R)
+		\iota_{n} j_{n} (\kappa_{\interior} R)
 		P_{n}(\cos\theta)
 	\\
 	\sum_{n=0}^{\infty}
@@ -673,12 +648,12 @@ tenemos que
 	\left[
 		(2n + 1) \i^n \partial_{r} j_{n}(\kappa_{\exterior} R)
 		+
-		\sigma^{2}_{n} \partial_{r} h^{(2)}_{n}(\kappa_{\exterior} R)
+		\sigma_{n} \partial_{r} h^{(1)}_{n}(\kappa_{\exterior} R)
 	\right] P_{n}(\cos\theta)
 	&=
 	\sum_{n=0}^{\infty}
 		\kappa_{\interior}
-		\iota^{1}_{n} \partial_{r} j_{n} (\kappa_{\interior} R)
+		\iota_{n} \partial_{r} j_{n} (\kappa_{\interior} R)
 		P_{n}(\cos\theta)
 \end{alignat}
 Donde usamos que \(\partial_{\n} = \partial_{r}\) en coordenadas esféricas y
@@ -688,18 +663,18 @@ sistema lineal
 \begin{alignat}{2}
 	(2n+1)\i^n j_{n}(\kappa_{\exterior} R)
 	+
-	\sigma^{2}_{n} h^{(2)}_{n}(\kappa_{\exterior} R)
+	\sigma_{n} h^{(1)}_{n}(\kappa_{\exterior} R)
 	&=
-	\iota^{1}_{n} j_{n}(\kappa_{\interior} R)
+	\iota_{n} j_{n}(\kappa_{\interior} R)
 	\\
 	\frac{\rho^{\interior}}{\rho^{\exterior}} \kappa_{\exterior}
 	\left[
 		(2n+1)\i^n \partial_{r} j_{n}(\kappa_{\exterior} R)
 		+
-		\sigma^{2}_{n} \partial_{r} h^{(2)}_{n}(\kappa_{\exterior} R)
+		\sigma_{n} \partial_{r} h^{(1)}_{n}(\kappa_{\exterior} R)
 	\right]
 	&=
-	\kappa_{\interior} \iota^{1}_{n} \partial_{r} j_{n}(\kappa_{\interior} R)
+	\kappa_{\interior} \iota_{n} \partial_{r} j_{n}(\kappa_{\interior} R)
 \end{alignat}
 para cada \(n \ge 0\). 
 
@@ -707,7 +682,7 @@ Dejemos a \(\rho \coloneqq \rho^{\interior}/\rho^{\exterior}\) y \(\kappa
 \coloneqq \kappa_{\exterior}/\kappa_{\interior}\). Luego, 
 resolviendo el sistema se obtiene:
 \begin{alignat}{2}
-	\sigma^{2}_{n}
+	\sigma_{n}
 	&=
 	\frac
 	{%
@@ -724,16 +699,16 @@ resolviendo el sistema se obtiene:
 	{%
 		\rho \kappa
 		j_{n}(\kappa_{\interior} R)
-		h^{(2)'}_{n}(\kappa_{\exterior} R)
+		h^{(1)'}_{n}(\kappa_{\exterior} R)
 		-
 		j'_{n}(\kappa_{\interior} R)
-		h^{(2)}_{n}(\kappa_{\exterior} R)
+		h^{(1)}_{n}(\kappa_{\exterior} R)
 	}
 	\\
-	\iota^{1}_{n}
+	\iota_{n}
 	&=
 	\frac
-		{(2n + 1) \i^n j_n(\kappa_{\exterior} R) + \sigma^{2}_{n} h^{(2)}_{n} (\kappa_{\exterior} R)}
+		{(2n + 1) \i^n j_n(\kappa_{\exterior} R) + \sigma_{n} h^{(1)}_{n} (\kappa_{\exterior} R)}
 		{j_{n}(\kappa_{\interior} R)}
 \end{alignat}
 
@@ -1107,7 +1082,7 @@ Restando~\eqref{bem:tp:relacion_ext} nos da la ecuación
 
 \begin{table}[H]
 \centering
-\begin{tabular}{ |c|p{4cm}|c|p{4cm}|  }
+\begin{tabular}{ |p{1cm}|p{4cm}|p{2cm}|p{4cm}|  }
 	\hline
 	\multicolumn{4}{|c|}{Problema Exterior} \\
 	\hline
@@ -1115,12 +1090,12 @@ Restando~\eqref{bem:tp:relacion_ext} nos da la ecuación
 	\hline
 	\multirow{2}{2cm}{ \(p_{\sca}\) }
 	& 
-	\multirow{2}{2cm}{ \(\sum_{n=0}^{\infty} a_n h^{(2)}_{n}(\kappa_{\exterior} r) P_{n}(\cos\theta)\) }
+	\multirow{2}{2cm}{ \(\sum_{n=0}^{\infty} a_n h^{(1)}_{n}(\kappa_{\exterior} r) P_{n}(\cos\theta)\) }
 	&
-	Dirichlet& \(a_n = -\dfrac{(2n+1)\i^n j_n(\kappa R)}{h_n^{(2)}(\kappa R)}\) \\[1em]
+	Dirichlet& \(a_n = -\dfrac{(2n+1)\i^n j_n(\kappa R)}{h^{(1)}_{n}(\kappa R)}\) \\[1em]
 	\cline{3-4}
 	&&
-	Neumann& \( a_n = -\dfrac{(2n+1) \i^n j_n'(\kappa R)}{h_{n}^{(2)'}(\kappa R)}\)
+	Neumann& \( a_n = -\dfrac{(2n+1) \i^n j_n'(\kappa R)}{h^{(1)'}_{n}(\kappa R)}\)
 	\\[1em]
 	\hline
 	\multicolumn{4}{|c|}{Problema de Transmisión} \\
@@ -1129,7 +1104,7 @@ Restando~\eqref{bem:tp:relacion_ext} nos da la ecuación
 	\hline
 	\(p_{\sca}\)
 	& 
-	\(\sum_{n=0}^{\infty} a_n h^{(2)}_{n}(\kappa_{\exterior} r) P_{n}(\cos\theta)\)
+	\(\sum_{n=0}^{\infty} a_n h^{(1)}_{n}(\kappa_{\exterior} r) P_{n}(\cos\theta)\)
 	&
 	\multicolumn{2}{|c|}{\(
 	a_{n} =
@@ -1153,7 +1128,7 @@ Restando~\eqref{bem:tp:relacion_ext} nos da la ecuación
 		-
 		\rho_{\exterior} \kappa_{\interior}
 		j'_{n}(\kappa_{\interior} R)
-		h^{(2)}_{n}(\kappa_{\exterior} R)
+		h^{(1)}_{n}(\kappa_{\exterior} R)
 	}\)
 	} \\[1em]
 	\hline
@@ -1167,7 +1142,7 @@ Restando~\eqref{bem:tp:relacion_ext} nos da la ecuación
 	{
 		(2n + 1) \i^n j_n(\kappa_{\exterior} R) 
 		+ 
-		a_{n} h^{(2)}_{n} (\kappa_{\exterior} R)
+		a_{n} h^{(1)}_{n} (\kappa_{\exterior} R)
 	}
 	{
 		j_{n}(\kappa_{\interior} R)
@@ -1794,46 +1769,46 @@ Nótese que \(j_n \vert_{\R}\) es una función real. Usando que
 Obtenemos que para \(\kappa\in \R\), \(j_n\) y \(y_n\) representan ondas
 estacionarias. En efecto,
 \begin{displaymath}
-	j_n(\kappa r) e^{\i \omega t}
+	j_n(\kappa r) e^{-\i \omega t}
 	=
-	\frac{(A_1 + \i A_0)}{2} e^{\i (z - \frac{1}{2} n \pi + \omega t)}
+	\frac{(A_1 + \i A_0)}{2} e^{\i (z - \frac{1}{2} n \pi - \omega t)}
 	+
-	\frac{(A_1 - \i A_0)}{2} e^{\i (\omega t - (z - \frac{1}{2} n \pi))}
+	\frac{(A_1 - \i A_0)}{2} e^{-\i (z - \frac{1}{2} n \pi + \omega t)}
 \end{displaymath}
 y
 \begin{displaymath}
-	y_n(\kappa r) e^{\i \omega t}
+	y_n(\kappa r) e^{-\i \omega t}
 	=
-	\frac{-A_0 - \i A_1}{2} e^{\i (\kappa r - \frac{1}{2} n \pi + \omega t)}
+	\frac{-A_0 - \i A_1}{2} e^{\i (\kappa r - \frac{1}{2} n \pi - \omega t)}
 	+
-	\frac{-A_0 + \i A_1}{2} e^{\i (\omega t - (\kappa r - \frac{1}{2} n \pi))} 
+	\frac{-A_0 + \i A_1}{2} e^{-\i (\kappa r - \frac{1}{2} n \pi + \omega t)} 
 \end{displaymath}
 Con esto podemos ver que \(h^{(1)}_n\) y \(h^{(2)}_n\) representan ondas
 viajeras, pues,
 \begin{displaymath}
-	h^{(1)}_n(\kappa r) e^{\i \omega t}
+	h^{(1)}_n(\kappa r) e^{-\i \omega t}
 	=
-	j_n(\kappa r) e^{\i \omega t}
+	j_n(\kappa r) e^{-\i \omega t}
 	+
-	\i y_n(\kappa r) e^{\i \omega t}
+	\i y_n(\kappa r) e^{-\i \omega t}
 	=
-	A_1 e^{\i (\kappa r - \frac{1}{2} n \pi + \omega t)}
+	A_1 e^{\i (\kappa r - \frac{1}{2} n \pi - \omega t)}
 	+
-	\i A_0 e^{\i (\omega t - (\kappa r - \frac{1}{2} n \pi))}
+	\i A_0 e^{-\i (\kappa r - \frac{1}{2} n \pi - \omega t)}
 \end{displaymath}
 y
 \begin{displaymath}
-	h^{(2)}_n(\kappa r) e^{\i \omega t}
+	h^{(2)}_n(\kappa r) e^{-\i \omega t}
 	=
-	j_n(\kappa r) e^{\i \omega t}
+	j_n(\kappa r) e^{-\i \omega t}
 	-
-	\i y_n(\kappa r) e^{\i \omega t}
+	\i y_n(\kappa r) e^{-\i \omega t}
 	=
-	\i A_0 e^{\i (\kappa r - \frac{1}{2} n \pi + \omega t)}
+	\i A_0 e^{\i (\kappa r - \frac{1}{2} n \pi - \omega t)}
 	+
-	A_1 e^{\i (\omega t - (\kappa r - \frac{1}{2} n \pi))}
+	A_1 e^{-\i (\kappa r - \frac{1}{2} n \pi + \omega t)}
 \end{displaymath}
-Nótese que \(h^{(1)}_n\) viajan a \(-r\) y \(h^{(2)}_n\) viajan \(+r\).
+Nótese que \(h^{(1)}_n\) viajan a \(+r\) y \(h^{(2)}_n\) viajan \(-r\).
 
 \subsection{Funciones de Legendre}
 \label{ap:funciones especiales:legendre}
