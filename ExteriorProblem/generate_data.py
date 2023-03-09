@@ -7,7 +7,7 @@ from bem import function_for_neumann, function_for_dirichlet
 
 import parameters as params
 
-hkl2 = lambda n, z, derivative=False: sjn(n, z, derivative=derivative) - 1j * syn(n, z, derivative=derivative)
+hkl1 = lambda n, z, derivative=False: sjn(n, z, derivative=derivative) + 1j * syn(n, z, derivative=derivative)
 
 if __name__ == '__main__':
     '''
@@ -51,7 +51,7 @@ if __name__ == '__main__':
             coef = coefficients_for('dirichlet', k, epsilon=params.EPSILON)
             psca = np.zeros_like(pinc, dtype=np.complex128)
             for (n, an) in enumerate(coef):
-                psca[ext] += an * hkl2(n, k * rs[ext]) * eval_legendre(n, ps[ext])
+                psca[ext] += an * hkl1(n, k * rs[ext]) * eval_legendre(n, ps[ext])
 
             data = (np.real(psca + pinc), coef.size)
             np.save(fpath, data)
@@ -70,7 +70,7 @@ if __name__ == '__main__':
             coef = coefficients_for('neumann', k, epsilon=params.EPSILON)
             psca = np.zeros_like(pinc, dtype=np.complex128)
             for (n, bn) in enumerate(coef):
-                psca[ext] += bn * hkl2(n, k * rs[ext]) * eval_legendre(n, ps[ext])
+                psca[ext] += bn * hkl1(n, k * rs[ext]) * eval_legendre(n, ps[ext])
 
             data = (np.real(psca + pinc), coef.size)
             np.save(fpath, data)

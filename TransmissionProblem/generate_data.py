@@ -44,7 +44,7 @@ def generate_data():
                                                              epsilon=params.EPSILON)
 
                         pinc = np.zeros_like(rs, dtype=np.complex128)
-                        pinc[ext] = np.exp(1j * ke * z[ext])
+                        pinc[ext] = np.exp(-1j * ke * z[ext])
 
                         psca = np.zeros_like(x, dtype=np.complex128)
                         pint = np.zeros_like(x, dtype=np.complex128)
@@ -88,7 +88,7 @@ def generate_data():
                         dlp_pot_ext = bempp.api.operators.potential.helmholtz.double_layer(dspace, pnts_ext, ke)
 
                         uint = (slp_pot_int * ((re/ri) * tnf) - dlp_pot_int * tdf).ravel()
-                        uext = (dlp_pot_ext * tdf - slp_pot_ext * tnf).ravel() + np.exp(1j * ke * pnts_ext[2])
+                        uext = (dlp_pot_ext * tdf - slp_pot_ext * tnf).ravel() + np.exp(-1j * ke * pnts_ext[2])
 
                         utot = np.zeros(pnts.shape[1], dtype='complex128')
                         utot[idx_ext] = uext

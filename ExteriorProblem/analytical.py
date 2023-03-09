@@ -1,20 +1,20 @@
 import numpy as np
 from scipy.special import spherical_jn, spherical_yn, eval_legendre
 
-spherical_hankel2 = lambda n, z, derivative=False: spherical_jn(n, z, derivative=derivative) - 1j * spherical_yn(n, z, derivative=derivative)
+spherical_hankel1 = lambda n, z, derivative=False: spherical_jn(n, z, derivative=derivative) + 1j * spherical_yn(n, z, derivative=derivative)
 
 BD_COEF = { # return a tuple with (numerator, denominator)
     'dirichlet': 
            lambda n,r,k: 
            (
                 -(2*n + 1) * 1j**n * spherical_jn(n, k*r),
-                spherical_hankel2(n, k*r)
+                spherical_hankel1(n, k*r)
             ),
     'neumann': 
            lambda n,r,k:
            (
                 -(2*n + 1) * 1j**n * spherical_jn(n, k*r, derivative=True),
-                spherical_hankel2(n, k*r, derivative=True)
+                spherical_hankel1(n, k*r, derivative=True)
             ),
 }
 

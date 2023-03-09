@@ -35,8 +35,8 @@ def total_exterior_cauchy_trace(
         
     @bempp.api.complex_callable
     def trace_neumann_pinc(x, n, domain_index, result):
-        # d_n e^{ikz} = (0, 0, ik e^{ikz}.(0,0,n3) = ik n3 e^{ikz}
-        result[0] = 1j * k_ext * n[2] * np.exp(1j * k_ext * x[2])
+        # d_n e^{ikz} = (0, 0, ik e^{-ikz}.(0,0,n3) = ik n3 e^{-ikz}
+        result[0] = 1j * k_ext * n[2] * np.exp(-1j * k_ext * x[2])
 
     dspace = Ai[0, 0].domain
     nspace = Ai[0, 1].domain

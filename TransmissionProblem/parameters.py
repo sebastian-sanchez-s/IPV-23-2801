@@ -17,7 +17,7 @@ ELEM_SIZE       = lambda k, n: 2*np.pi / (n * k)
 ''' 
     Visual 
 '''
-VN      = 30 
+VN      = 30
 VH      = lambda k: VN * (DMAX - DMIN) * k // 6
 GRID    = lambda k: np.mgrid[DMIN:DMAX:VH(k) * 1j, DMIN:DMAX:VH(k) * 1j]
 
